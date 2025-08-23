@@ -18,7 +18,8 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           cd ~/romantic
-          git pull origin main
+          git fetch origin main
+          git reset --hard origin/main
           echo "Updating Python packages..."
           venv/bin/pip install -r requirements.txt
           echo "Restarting services..."
