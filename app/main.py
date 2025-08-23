@@ -6,7 +6,7 @@ from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from typing import List, Optional
-from datetime import timedelta
+from datetime import datetime, timedelta
 from . import crud, models, schemas, auth, telegram
 from jose import JWTError, jwt
 from .database import SessionLocal, engine, get_db
@@ -14,6 +14,7 @@ from .database import SessionLocal, engine, get_db
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
 
 # --- Path Configuration ---
 BASE_DIR = Path(__file__).resolve().parent
@@ -280,3 +281,22 @@ async def read_root():
 @app.get("/admin", response_class=HTMLResponse)
 async def admin_page():
     return FileResponse('app/static/admin.html')
+
+@app.post("/api/notify_new_flowers")
+async def notify_new_flowers(
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+    admin_user: schemas.User = Depends(get_current_admin_user)
+):
+    """
+    Notifies all subscribers about new flower batches added in the last 3 hours.
+    """
+    three_hours_ago = datetime.utcnow() - timedelta(hours=3)
+    new_flowers = db.query(models.FlowerBatch).filter(models.FlowerBatch.created_at >= three_hours_ago).all()
+    
+    if not new_flowers:
+        return {"message": "Новых цветов за последние 3 часа не найдено."}
+
+    background_tasks.add_task(telegram.broadcast_new_flowers, new_flowers)
+    
+    return {"message": f"Рассылка о {len(new_flowers)} новых партиях запущена!"}

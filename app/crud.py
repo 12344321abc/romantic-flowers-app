@@ -193,3 +193,22 @@ def delete_old_flowers(db: Session):
         db.delete(flower)
 
     db.commit()
+
+# --- Telegram Subscriber CRUD ---
+
+def get_subscriber(db: Session, chat_id: int):
+    return db.query(models.TelegramSubscriber).filter(models.TelegramSubscriber.chat_id == chat_id).first()
+
+def create_or_update_subscriber(db: Session, chat_id: int, is_active: bool = True):
+    db_subscriber = get_subscriber(db, chat_id)
+    if db_subscriber:
+        db_subscriber.is_active = is_active
+    else:
+        db_subscriber = models.TelegramSubscriber(chat_id=chat_id, is_active=is_active)
+        db.add(db_subscriber)
+    db.commit()
+    db.refresh(db_subscriber)
+    return db_subscriber
+
+def get_active_subscribers(db: Session):
+    return db.query(models.TelegramSubscriber).filter(models.TelegramSubscriber.is_active == True).all()

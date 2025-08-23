@@ -24,5 +24,6 @@ jobs:
           venv/bin/pip install -r requirements.txt
           echo "Restarting services..."
           sudo systemctl restart romantic
+          sudo systemctl restart romantic-bot
           sudo systemctl restart nginx
           echo "Deployment complete!"

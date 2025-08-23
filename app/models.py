@@ -60,3 +60,12 @@ class OrderItem(Base):
 
     order = relationship("Order", back_populates="items")
     flower_batch = relationship("FlowerBatch")
+
+
+from sqlalchemy import Boolean
+
+class TelegramSubscriber(Base):
+    __tablename__ = "telegram_subscribers"
+
+    chat_id = Column(Integer, primary_key=True, index=True)
+    is_active = Column(Boolean, default=True)

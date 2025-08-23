@@ -85,3 +85,16 @@ class Order(OrderBase):
     
     class Config:
         from_attributes = True
+
+# --- Telegram Subscriber Schemas ---
+class TelegramSubscriberBase(BaseModel):
+    chat_id: int
+
+class TelegramSubscriberCreate(TelegramSubscriberBase):
+    pass
+
+class TelegramSubscriber(TelegramSubscriberBase):
+    is_active: bool
+
+    class Config:
+        from_attributes = True

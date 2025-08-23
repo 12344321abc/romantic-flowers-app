@@ -45,16 +45,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         try {
-            // This request will succeed only if the user is an admin
             await apiFetch('/users/me/admin/');
             loginView.classList.add('hidden');
             adminView.classList.remove('hidden');
-            // Check if a view is already active, otherwise switch to default
             if (!document.querySelector('.nav-btn.active')) {
                 switchView('flowers-view');
             }
         } catch (error) {
-            // If the token is invalid or the user is not an admin, logout and show login form
             logout();
         }
     };
@@ -235,7 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // ---- Orders Logic ----
     async function fetchOrders() {
         try {
-            // Fetch all necessary data in parallel
             const [orders, users, flowers] = await Promise.all([
                 apiFetch('/orders/'),
                 apiFetch('/users/'),
@@ -248,7 +244,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Create lookup maps for faster access
             const customerNames = users.reduce((acc, user) => {
                 acc[user.id] = user.contact_name || user.username;
                 return acc;
@@ -326,6 +321,23 @@ document.addEventListener('DOMContentLoaded', () => {
             if (target.classList.contains('add-btn')) addFlowerQuantity(flowerId, quantity);
             else if (target.classList.contains('sell-btn')) sellFlowers(flowerId, quantity);
             quantityInput.value = '';
+        }
+    });
+
+    document.body.addEventListener('click', async (e) => {
+        if (e.target.id === 'broadcast-btn') {
+            const btn = e.target;
+            const statusEl = document.getElementById('broadcast-status');
+            btn.disabled = true;
+            statusEl.textContent = 'Отправка...';
+            try {
+                const response = await apiFetch('/api/notify_new_flowers', { method: 'POST' });
+                statusEl.textContent = response.message;
+            } catch (error) {
+                statusEl.textContent = `Ошибка: ${error.message}`;
+            } finally {
+                btn.disabled = false;
+            }
         }
     });
 

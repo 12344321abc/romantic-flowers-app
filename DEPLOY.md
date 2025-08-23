@@ -176,3 +176,38 @@ Nginx будет служить обратным прокси (reverse proxy), �
     ```
 
 После выполнения этих шагов ваш сайт будет работать по защищенному протоколу `https://`, а в адресной строке браузера появится замок.
+
+---
+### **Запуск Telegram-бота как отдельного сервиса**
+
+Чтобы бот работал независимо от веб-сервера, мы создадим для него отдельный сервис `systemd`.
+
+1.  **Создайте новый файл сервиса:**
+    ```bash
+    sudo nano /etc/systemd/system/romantic-bot.service
+    ```
+
+2.  **Вставьте в него следующую конфигурацию**, **заменив `vitus` на ваше имя пользователя**:
+    ```ini
+    [Unit]
+    Description=Telegram Bot for Romantic Flower Farm
+    After=network.target
+
+    [Service]
+    User=vitus
+    Group=www-data
+    WorkingDirectory=/home/vitus/romantic
+    Environment="PATH=/home/vitus/romantic/venv/bin"
+    ExecStart=/home/vitus/romantic/venv/bin/python run_bot.py
+
+    [Install]
+    WantedBy=multi-user.target
+    ```
+
+3.  **Запустите и включите сервис бота:**
+    ```bash
+    sudo systemctl start romantic-bot
+    sudo systemctl enable romantic-bot
+    ```
+
+Теперь у вас будут работать два независимых сервиса: `romantic` для сайта и `romantic-bot` для Telegram.
