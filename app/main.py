@@ -297,6 +297,17 @@ async def notify_new_flowers(
     if not new_flowers:
         return {"message": "Новых цветов за последние 3 часа не найдено."}
 
-    background_tasks.add_task(telegram.broadcast_new_flowers, new_flowers)
+    flower_details_list = [
+        {
+            "name": f.name,
+            "description": f.description,
+            "price": f.price,
+            "quantity": f.quantity,
+            "file_path": str(UPLOADS_DIR / Path(f.image_url).name) # Pass the absolute file path
+        }
+        for f in new_flowers
+    ]
+
+    background_tasks.add_task(telegram.broadcast_new_flowers, flower_details_list)
     
     return {"message": f"Рассылка о {len(new_flowers)} новых партиях запущена!"}
