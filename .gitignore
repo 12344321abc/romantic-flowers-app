@@ -14,8 +14,6 @@ flowers.db
 
 # macOS files
 .DS_Store
-# Deployment instructions
-DEPLOY.md
 # User-uploaded files
 app/static/uploads/
 # SSH keys
