@@ -331,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.disabled = true;
             statusEl.textContent = 'Отправка...';
             try {
-                const response = await apiFetch('/api/notify_new_flowers', { method: 'POST' });
+                const response = await apiFetch('/notify/new_flowers', { method: 'POST' });
                 statusEl.textContent = response.message;
             } catch (error) {
                 statusEl.textContent = `Ошибка: ${error.message}`;

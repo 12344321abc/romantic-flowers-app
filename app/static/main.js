@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!mainNav) return;
 
         const cart = getCart();
-        const count = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
+        const count = Object.keys(cart).length;
 
         let navHtml = '<a href="/">Каталог</a>';
         if (authToken) {
@@ -131,10 +131,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 let actionHtml = `<p><a href="/static/login.html">Войдите</a>, чтобы добавить в корзину</p>`;
                 if (authToken) {
                     actionHtml = `
-                        <div class="add-to-cart-container" data-id="${flower.id}" data-name="${flower.name}" data-price="${flower.price}" data-max-quantity="${flower.quantity}">
+                        <div class="quantity-selector" data-id="${flower.id}" data-name="${flower.name}" data-price="${flower.price}" data-max-quantity="${flower.quantity}">
+                            <button class="change-qty-btn" data-change="-1">-</button>
                             <input type="number" class="quantity-input" value="1" min="1" max="${flower.quantity}">
-                            <button class="add-to-cart-btn">В корзину</button>
+                            <button class="change-qty-btn" data-change="1">+</button>
                         </div>
+                        <button class="add-to-cart-btn">Добавить в корзину</button>
                     `;
                 }
                 flowerDiv.innerHTML = `
@@ -297,9 +299,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.body.addEventListener('click', e => {
         if (e.target.matches('.add-to-cart-btn')) {
-            const container = e.target.closest('.add-to-cart-container');
-            const quantity = parseInt(container.querySelector('.quantity-input').value);
-            const { id, name, price, maxQuantity } = container.dataset;
+            const flowerItem = e.target.closest('.flower-item');
+            const quantitySelector = flowerItem.querySelector('.quantity-selector');
+            const quantity = parseInt(quantitySelector.querySelector('.quantity-input').value);
+            const { id, name, price, maxQuantity } = quantitySelector.dataset;
 
             const cart = getCart();
             const existingQty = cart[id] ? cart[id].quantity : 0;
@@ -322,19 +325,49 @@ document.addEventListener('DOMContentLoaded', () => {
             initCartPage();
         }
         if (e.target.matches('.change-qty-btn')) {
-             const { id, change } = e.target.dataset;
-             let cart = getCart();
-             if(cart[id]) {
-                 updateCartQuantity(id, cart[id].quantity + parseInt(change));
-             }
+            const quantityInput = e.target.parentElement.querySelector('.quantity-input');
+            const currentValue = parseInt(quantityInput.value);
+            const change = parseInt(e.target.dataset.change);
+            const newValue = currentValue + change;
+            if (newValue >= parseInt(quantityInput.min)) {
+                quantityInput.value = newValue;
+            }
         }
     });
     
     document.body.addEventListener('input', e => {
-        if(e.target.matches('.cart-item-controls .quantity-input')) {
-            const { id } = e.target.dataset;
-            const newQuantity = parseInt(e.target.value, 10);
-            if (!isNaN(newQuantity)) {
+        // Sanitize input for all quantity fields to allow only natural numbers
+        if (e.target.matches('.quantity-input')) {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            // If in cart, trigger an update immediately
+            if (e.target.closest('.cart-item-controls')) {
+                const { id } = e.target.dataset;
+                const newQuantity = parseInt(e.target.value, 10);
+                if (!isNaN(newQuantity)) {
+                     updateCartQuantity(id, newQuantity);
+                }
+            }
+        }
+    });
+
+    document.body.addEventListener('change', e => {
+        // Final validation when user leaves the input field
+        if (e.target.matches('.quantity-input')) {
+            const min = parseInt(e.target.min, 10) || 1;
+            const max = parseInt(e.target.max, 10);
+            let value = parseInt(e.target.value, 10);
+
+            if (isNaN(value) || value < min) {
+                e.target.value = min;
+            } else if (!isNaN(max) && value > max) {
+                e.target.value = max;
+            }
+            
+            // Trigger a final update for cart items
+             if (e.target.closest('.cart-item-controls')) {
+                const { id } = e.target.dataset;
+                const newQuantity = parseInt(e.target.value, 10);
+                // No need to check isNaN here, as we've already sanitized it
                 updateCartQuantity(id, newQuantity);
             }
         }
