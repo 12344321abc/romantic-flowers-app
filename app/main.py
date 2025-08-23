@@ -1,4 +1,5 @@
 import shutil
+from pathlib import Path
 from fastapi import FastAPI, Depends, HTTPException, status, UploadFile, File, Form, BackgroundTasks
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, FileResponse
@@ -14,7 +15,12 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
+# --- Path Configuration ---
+BASE_DIR = Path(__file__).resolve().parent
+UPLOADS_DIR = BASE_DIR / "static" / "uploads"
+UPLOADS_DIR.mkdir(parents=True, exist_ok=True) # Ensure directory exists
+
+app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -67,8 +73,8 @@ def create_flower(
     db: Session = Depends(get_db),
     current_user: schemas.User = Depends(get_current_admin_user)
 ):
-    # Save the uploaded file
-    file_path = f"app/static/uploads/{image.filename}"
+    # Save the uploaded file using an absolute path
+    file_path = UPLOADS_DIR / image.filename
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(image.file, buffer)
 
@@ -140,7 +146,7 @@ def create_user_endpoint(
     
     photo_url = None
     if photo:
-        file_path = f"app/static/uploads/{photo.filename}"
+        file_path = UPLOADS_DIR / photo.filename
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(photo.file, buffer)
         photo_url = f"/static/uploads/{photo.filename}"
