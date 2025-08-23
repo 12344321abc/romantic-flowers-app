@@ -16,3 +16,5 @@ flowers.db
 .DS_Store
 # Deployment instructions
 DEPLOY.md
+# User-uploaded files
+app/static/uploads/
