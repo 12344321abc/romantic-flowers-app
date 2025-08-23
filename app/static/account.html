@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет - Romantic Flower Farm</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div id="shop-view">
+        <header>
+            <h1><a href="/">Romantic Flower Farm</a></h1>
+            <nav id="main-nav">
+                <!-- Nav links will be updated by JS -->
+            </nav>
+        </header>
+
+        <main>
+            <h2>Личный кабинет</h2>
+            <div id="account-info">
+                <h3>Информация о клиенте</h3>
+                <p><strong>Имя:</strong> <span id="user-contact-name"></span></p>
+                <p><strong>Логин:</strong> <span id="user-username"></span></p>
+                <p><strong>Адрес:</strong> <span id="user-address"></span></p>
+            </div>
+            <hr>
+            <div id="order-history">
+                <h3>История ваших заказов</h3>
+                <div id="order-history-container">
+                    <!-- Order history will be rendered here by JavaScript -->
+                </div>
+                <p id="no-orders-message" class="hidden">У вас пока нет заказов.</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Romantic Flower Farm. Все права защищены.</p>
+        </footer>
+    </div>
+    <script src="/static/main.js"></script>
+</body>
+</html>

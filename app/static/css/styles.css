@@ -1,0 +1,295 @@
+/* =================================================================
+   BASE & LAYOUT
+   ================================================================= */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Generic container for all main page views */
+#shop-view, #login-view, #cart-view, #account-view, #admin-main-view {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+main {
+    flex-grow: 1;
+}
+
+footer {
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: auto;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* =================================================================
+   TYPOGRAPHY & FORMS
+   ================================================================= */
+
+h1, h2, h3, h4 {
+    color: #5a2a5a;
+}
+
+a {
+    color: #5a2a5a;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="file"],
+textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button, .button {
+    background-color: #5a2a5a;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    white-space: nowrap;
+    text-align: center;
+}
+button:hover, .button:hover {
+    background-color: #482248;
+}
+
+.error-message {
+    color: #d8000c;
+    background-color: #ffbaba;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+/* =================================================================
+   HEADER & NAVIGATION
+   ================================================================= */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    margin: 0;
+}
+header h1 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+header nav {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+header nav a {
+    padding: 0.5rem 0;
+}
+
+.nav-btn {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ddd;
+}
+.nav-btn.active {
+    background-color: #5a2a5a;
+    color: white;
+    border-color: #5a2a5a;
+}
+
+/* =================================================================
+   ADMIN-SPECIFIC STYLES
+   ================================================================= */
+#admin-login-view {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* =================================================================
+   FLOWER CATALOG & ITEMS
+   ================================================================= */
+
+#flower-catalog, #flower-list {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.flower-item {
+    background: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+.flower-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+.flower-item p {
+    margin: 0.25rem 0;
+}
+.actions-container {
+    margin-top: auto;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.quantity-control {
+    display: flex;
+    align-items: center;
+}
+.quantity-control input {
+    flex-grow: 1;
+    min-width: 0;
+    border-radius: 4px 0 0 4px;
+    border-right: none;
+    margin-bottom: 0;
+}
+.quantity-control button {
+    width: 40px;
+    flex-shrink: 0;
+    border-radius: 0;
+    padding: 0.8rem;
+}
+.quantity-control .add-btn {
+    background-color: #2a7d5a;
+}
+.quantity-control .add-btn:hover {
+    background-color: #226448;
+}
+.quantity-control button:last-child {
+    border-radius: 0 4px 4px 0;
+}
+.delete-btn {
+    background-color: #c94c4c;
+    width: 100%;
+}
+.delete-btn:hover {
+    background-color: #a03c3c;
+}
+
+
+/* =================================================================
+   CART & ORDERS
+   ================================================================= */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+}
+.cart-item:last-child {
+    border-bottom: none;
+}
+.cart-item-info {
+    display: flex;
+    flex-direction: column;
+}
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.cart-item-controls .quantity-input {
+    width: 60px;
+    text-align: center;
+    margin-bottom: 0;
+}
+.cart-item-controls .change-qty-btn,
+.cart-item-controls .remove-from-cart-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+}
+.cart-item-controls .remove-from-cart-btn {
+    background-color: #c94c4c;
+}
+.cart-item-controls .remove-from-cart-btn:hover {
+    background-color: #a03c3c;
+}
+
+.order-item {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+.order-item ul {
+    list-style-type: '– ';
+    padding-left: 20px;
+}
+
+/* =================================================================
+   CUSTOMER
+   ================================================================= */
+
+.customer-item {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.customer-item img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    float: left;
+    margin-right: 1.5rem;
+}

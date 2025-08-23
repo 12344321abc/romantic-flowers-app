@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | Romantic Flower Farm</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+    <div id="admin-login-view">
+        <h1>Вход в панель администратора</h1>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Имя пользователя" required>
+            <input type="password" id="password" placeholder="Пароль" required>
+            <button type="submit">Войти</button>
+        </form>
+        <p id="login-error" class="error-message"></p>
+    </div>
+
+    <div id="admin-main-view" class="hidden">
+        <header>
+            <h1>Админ-панель</h1>
+            <nav>
+                <button class="nav-btn" data-view="flowers-view">Товары</button>
+                <button class="nav-btn" data-view="customers-view">Клиенты</button>
+                <button class="nav-btn" data-view="orders-view">Заказы</button>
+            </nav>
+            <button id="logout-btn">Выйти</button>
+        </header>
+
+        <main>
+            <div id="flowers-view">
+                <section id="add-flower-form">
+                    <h2>Добавить новую партию цветов</h2>
+                <form id="flower-form">
+                    <input type="text" id="flower-name" placeholder="Название сорта" required>
+                    <textarea id="flower-description" placeholder="Описание" required></textarea>
+                    <div style="display: flex; gap: 1rem;">
+                        <input type="number" id="flower-price" placeholder="Цена" required style="width: 50%;">
+                        <input type="number" id="flower-quantity" placeholder="Количество" required style="width: 50%;">
+                    </div>
+                    <label for="flower-image">Изображение:</label>
+                    <input type="file" id="flower-image" accept="image/*" required>
+                    <button type="submit">Добавить</button>
+                </form>
+                </section>
+
+                <section id="flower-list-section">
+                    <h2>Текущие партии в продаже</h2>
+                    <div id="flower-list"></div>
+                </section>
+            </div>
+
+            <div id="customers-view" class="hidden">
+                 <section id="add-customer-form">
+                    <h2>Добавить нового клиента</h2>
+                    <form id="customer-form">
+                        <input type="text" id="customer-username" placeholder="Логин (для входа)" required>
+                        <input type="password" id="customer-password" placeholder="Пароль" required>
+                        <input type="password" id="customer-password-confirm" placeholder="Подтвердите пароль" required>
+                        <input type="text" id="customer-contact-name" placeholder="Имя / Название магазина" required>
+                        <textarea id="customer-address" placeholder="Адрес доставки"></textarea>
+                        <label for="customer-photo">Фото клиента:</label>
+                        <input type="file" id="customer-photo" accept="image/*">
+                        <textarea id="customer-admin-notes" placeholder="Заметки (видны только вам)"></textarea>
+                        <button type="submit">Добавить клиента</button>
+                    </form>
+                </section>
+                <section id="customer-list-section">
+                    <h2>Список клиентов</h2>
+                    <div id="customer-list"></div>
+                </section>
+            </div>
+            
+            <div id="orders-view" class="hidden">
+                <h2>Список заказов</h2>
+                <div id="order-list"></div>
+            </div>
+
+        </main>
+    </div>
+
+<script src="/static/admin.js"></script>
+</body>
+</html>

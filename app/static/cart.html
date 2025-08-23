@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина - Romantic Flower Farm</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1><a href="/">Romantic Flower Farm</a></h1>
+        <nav id="main-nav">
+            <!-- Nav links will be updated by JS -->
+        </nav>
+    </header>
+
+    <main>
+        <h2>Ваша корзина</h2>
+        <div id="cart-items-container">
+            <!-- Cart items will be rendered here by JavaScript -->
+        </div>
+        <div id="cart-summary">
+            <p><strong>Итого:</strong> <span id="cart-total-price">0</span> руб.</p>
+            <hr>
+            <h3>Оформление заказа</h3>
+            <form id="order-form">
+                <div class="form-group">
+                    <label for="customer-comment">Комментарий к заказу (необязательно):</label>
+                    <textarea id="customer-comment" name="customer-comment" rows="3"></textarea>
+                </div>
+                <button type="submit" id="place-order-btn">Оформить заказ</button>
+            </form>
+        </div>
+        <div id="cart-empty-message" class="hidden">
+            <p>Ваша корзина пуста. <a href="/">Перейти в каталог</a>.</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Romantic Flower Farm. Все права защищены.</p>
+    </footer>
+
+    <script src="/static/main.js"></script>
+</body>
+</html>
