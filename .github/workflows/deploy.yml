@@ -1,0 +1,27 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main # Запускать при пуше в ветку main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy to Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd ~/romantic
+          git pull origin main
+          echo "Updating Python packages..."
+          venv/bin/pip install -r requirements.txt
+          echo "Restarting services..."
+          sudo systemctl restart romantic
+          sudo systemctl restart nginx
+          echo "Deployment complete!"
