@@ -293,3 +293,53 @@ header nav a {
     float: left;
     margin-right: 1.5rem;
 }
+/* =================================================================
+   RESPONSIVE & ADAPTIVE STYLES
+   ================================================================= */
+
+/* For Tablets */
+@media (max-width: 992px) {
+    #shop-view, #login-view, #cart-view, #account-view, #admin-main-view {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    #flower-catalog, #flower-list {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+}
+
+/* For Mobile Phones */
+@media (max-width: 768px) {
+    body {
+        padding: 0; /* Remove body padding on mobile */
+    }
+
+    #shop-view, #login-view, #cart-view, #account-view, #admin-main-view {
+        margin: 0;
+        padding: 1rem;
+        border-radius: 0;
+        box-shadow: none;
+        min-height: 100vh;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    header nav {
+        flex-wrap: wrap;
+    }
+
+    #flower-catalog, #flower-list {
+        grid-template-columns: 1fr; /* Single column */
+    }
+
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
