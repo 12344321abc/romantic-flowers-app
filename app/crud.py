@@ -1,3 +1,5 @@
+import os
+from pathlib import Path
 from sqlalchemy.orm import Session
 from typing import Optional
 from . import models, schemas
@@ -58,6 +60,11 @@ def update_user(db: Session, user_id: int, user_update: schemas.UserUpdate):
 def delete_user(db: Session, user_id: int):
     db_user = get_user(db, user_id)
     if db_user:
+        if db_user.photo_url:
+            # Construct absolute path to the file
+            file_path = Path(__file__).resolve().parent / "static" / db_user.photo_url.lstrip('/static/')
+            if os.path.exists(file_path):
+                os.remove(file_path)
         db.delete(db_user)
         db.commit()
     return db_user
@@ -135,6 +142,11 @@ def sell_flowers(db: Session, flower_id: int, quantity_to_sell: int):
 def delete_flower(db: Session, flower_id: int):
     db_flower = get_flower(db, flower_id)
     if db_flower:
+        if db_flower.image_url:
+            # Construct absolute path to the file
+            file_path = Path(__file__).resolve().parent / "static" / db_flower.image_url.lstrip('/static/')
+            if os.path.exists(file_path):
+                os.remove(file_path)
         db.delete(db_flower)
         db.commit()
     return db_flower
@@ -152,18 +164,32 @@ def add_quantity(db: Session, flower_id: int, quantity_to_add: int):
     return db_flower
 
 def delete_old_flowers(db: Session):
-    # Delete sold flowers older than 1 week
+    # --- Deleting Sold Flowers ---
     one_week_ago = datetime.utcnow() - timedelta(weeks=1)
-    db.query(models.FlowerBatch).filter(
+    sold_flowers_to_delete = db.query(models.FlowerBatch).filter(
         models.FlowerBatch.status == "sold",
         models.FlowerBatch.sold_at <= one_week_ago
-    ).delete()
+    ).all()
 
-    # Delete available flowers older than 3 weeks
+    for flower in sold_flowers_to_delete:
+        if flower.image_url:
+            file_path = Path(__file__).resolve().parent / "static" / flower.image_url.lstrip('/static/')
+            if os.path.exists(file_path):
+                os.remove(file_path)
+        db.delete(flower)
+
+    # --- Deleting Available Flowers ---
     three_weeks_ago = datetime.utcnow() - timedelta(weeks=3)
-    db.query(models.FlowerBatch).filter(
+    available_flowers_to_delete = db.query(models.FlowerBatch).filter(
         models.FlowerBatch.status == "available",
         models.FlowerBatch.created_at <= three_weeks_ago
-    ).delete()
+    ).all()
+
+    for flower in available_flowers_to_delete:
+        if flower.image_url:
+            file_path = Path(__file__).resolve().parent / "static" / flower.image_url.lstrip('/static/')
+            if os.path.exists(file_path):
+                os.remove(file_path)
+        db.delete(flower)
 
     db.commit()
