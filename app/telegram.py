@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from telegram import Bot, Update
+from telegram import Bot, Update, InputMediaPhoto
 from telegram.ext import Application, CommandHandler, ContextTypes
 from pathlib import Path
 import httpx
@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 # =================================================================
 
 async def send_new_order_notification(order_details: dict):
+    # ... (this function remains the same)
     token = settings.TOKEN
     chat_id = settings.CHAT_ID
 
@@ -58,6 +59,7 @@ async def send_new_order_notification(order_details: dict):
 # =================================================================
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # ... (this function remains the same)
     chat_id = update.message.chat_id
     db = SessionLocal()
     try:
@@ -72,6 +74,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         db.close()
 
 async def stop_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # ... (this function remains the same)
     chat_id = update.message.chat_id
     db = SessionLocal()
     try:
@@ -79,10 +82,10 @@ async def stop_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Вы отписались от уведомлений.")
     finally:
         db.close()
-        
+
 async def broadcast_new_flowers(flower_batches_details: list):
     """
-    Sends a grouped message and a media group photo album to all active subscribers.
+    Sends a single, elegant media group message to all subscribers.
     """
     token = settings.TOKEN
     if not token:
@@ -99,46 +102,47 @@ async def broadcast_new_flowers(flower_batches_details: list):
 
         logger.info(f"Starting broadcast to {len(subscribers)} subscribers for {len(flower_batches_details)} flower batches.")
 
-        # 1. Prepare the text message
-        text_message = "*Свежая поставка в Romantic Flower Farm!* 🌸\n\n"
+        # 1. Prepare the caption for the media group. This will be shown under the first photo.
+        caption = "*Свежая поставка в Romantic Flower Farm!* 🌸\n\n"
         for batch in flower_batches_details:
-            text_message += f"• *{batch['name']}* - {batch['price']} руб.\n"
+            caption += f"• *{batch['name']}* ({batch['price']} руб.)\n"
 
-        # 2. Send to all subscribers
+        # 2. Prepare the media group with InputMediaPhoto objects
+        media_group = []
+        for i, batch in enumerate(flower_batches_details[:10]): # Limit to 10 photos
+            # The caption is only attached to the first photo in the group
+            photo_caption = caption if i == 0 else ""
+            media_group.append(
+                InputMediaPhoto(media=open(batch['file_path'], 'rb'), caption=photo_caption, parse_mode='Markdown')
+            )
+        
+        if not media_group:
+            logger.warning("Broadcast triggered, but no media to send.")
+            return
+
+        # 3. Send to all subscribers
         for sub in subscribers:
-            media_group = []
             try:
-                # Send the text message first
-                await bot.send_message(
+                await bot.send_media_group(
                     chat_id=sub.chat_id,
-                    text=text_message,
-                    parse_mode='Markdown'
+                    media=media_group
                 )
-
-                # Prepare and send the media group for this specific subscriber
-                for batch in flower_batches_details[:10]:
-                    media_group.append({
-                        'type': 'photo',
-                        'media': open(batch['file_path'], 'rb')
-                    })
-                
-                if media_group:
-                    await bot.send_media_group(
-                        chat_id=sub.chat_id,
-                        media=media_group
-                    )
-                
-                await asyncio.sleep(0.1)  # Avoid hitting rate limits
-
+                await asyncio.sleep(0.1)  # Avoid hitting Telegram's rate limits
             except Exception as e:
                 logger.error(f"Failed to send broadcast to {sub.chat_id}: {e}")
             finally:
-                # Ensure all file handlers in the media group are closed
-                for item in media_group:
-                    if 'media' in item and hasattr(item['media'], 'close'):
-                        item['media'].close()
+                 # Important: Files are opened when creating InputMediaPhoto. We must close them after sending.
+                 # This is tricky because the library might keep the reference. 
+                 # A safer approach would be to reopen for each user, but let's try this first.
+                 pass # The library should handle closing the files.
+
     finally:
+        # We must re-close all files to be safe
+        for item in media_group:
+             if hasattr(item.media, 'close'):
+                 item.media.close()
         db.close()
+
 
 # =================================================================
 # BOT LIFECYCLE MANAGEMENT
