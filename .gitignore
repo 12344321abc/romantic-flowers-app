@@ -18,3 +18,6 @@ flowers.db
 DEPLOY.md
 # User-uploaded files
 app/static/uploads/
+# SSH keys
+github_actions_key
+github_actions_key.pub
