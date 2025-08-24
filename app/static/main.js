@@ -122,8 +122,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (availableFlowers.length === 0) {
                 catalog.innerHTML = `
-                    <p>На данный момент свежих цветов в наличии нет. Загляните позже или подпишитесь на уведомления!</p>
-                    <p><a href="https://t.me/romantic_shopping_bot" target="_blank" rel="noopener noreferrer" class="button">🔔 Оповещения в Telegram</a></p>
+                    <div class="empty-catalog-message">
+                        <p>На данный момент свежих цветов в наличии нет.</p>
+                        <p>Подпишитесь, чтобы первым узнать о новой поставке!</p>
+                        <a href="https://t.me/romantic_shopping_bot" target="_blank" rel="noopener noreferrer" class="button">🔔 Оповещения в Telegram</a>
+                    </div>
                 `;
                 return;
             }

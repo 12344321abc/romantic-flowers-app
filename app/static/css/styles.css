@@ -233,6 +233,28 @@ header nav a {
     background-color: #a03c3c;
 }
 
+.empty-catalog-message {
+    text-align: center;
+    padding: 2rem;
+    border: 1px solid #eee;
+    background-color: #fafafa;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+.empty-catalog-message p {
+    font-size: 1.1rem;
+    color: #555;
+    margin: 0 0 1.5rem 0;
+}
+.empty-catalog-message p:last-of-type {
+    margin-bottom: 2rem;
+}
+
+.empty-catalog-message .button {
+    font-size: 1.1rem;
+    padding: 0.9rem 2rem;
+}
 
 /* =================================================================
    CART & ORDERS
