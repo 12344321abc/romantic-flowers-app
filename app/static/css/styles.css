@@ -166,6 +166,10 @@ header nav a {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1.5rem;
 }
+#flower-catalog.is-empty {
+    display: block;
+}
+
 
 .flower-item {
     background: #f9f9f9;

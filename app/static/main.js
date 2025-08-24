@@ -121,6 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             catalog.innerHTML = '';
 
             if (availableFlowers.length === 0) {
+                catalog.classList.add('is-empty');
                 catalog.innerHTML = `
                     <div class="empty-catalog-message">
                         <p>На данный момент свежих цветов в наличии нет.</p>
@@ -130,7 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 return;
             }
-
+            
+            catalog.classList.remove('is-empty');
             availableFlowers.forEach(flower => {
                 const flowerDiv = document.createElement('div');
                 flowerDiv.className = 'flower-item';
