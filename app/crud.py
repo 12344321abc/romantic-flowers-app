@@ -111,6 +111,10 @@ def create_order(db: Session, order: schemas.OrderCreate, customer_id: int):
         db.add(db_order_item)
         total_amount += flower_batch.price * item.quantity
 
+    if total_amount < 5000:
+        db.rollback()
+        return f"Минимальная сумма заказа - 5000 руб. Ваша сумма: {int(total_amount)} руб."
+
     db.commit()
     db.refresh(db_order)
     return db_order

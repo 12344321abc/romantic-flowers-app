@@ -202,6 +202,20 @@ document.addEventListener('DOMContentLoaded', () => {
             totalPrice += item.price * item.quantity;
         });
         getElement('cart-total-price').textContent = totalPrice.toFixed(2);
+        
+        const minimumOrderValue = 5000;
+        const placeOrderBtn = getElement('place-order-btn');
+        const cartMinimumError = getElement('cart-minimum-error');
+
+        if (totalPrice < minimumOrderValue) {
+            placeOrderBtn.disabled = true;
+            cartMinimumError.textContent = `Минимальная сумма заказа - ${minimumOrderValue} руб.`;
+            cartMinimumError.style.display = 'block';
+        } else {
+            placeOrderBtn.disabled = false;
+            cartMinimumError.textContent = '';
+            cartMinimumError.style.display = 'none';
+        }
     }
 
     async function handlePlaceOrder(e) {
