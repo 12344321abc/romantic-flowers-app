@@ -17,6 +17,27 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('cart', JSON.stringify(cart));
         updateNav();
     }
+    
+    function showToast(message, linkUrl, linkText) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        
+        let content = `<span class="toast-message">${message}</span>`;
+        if (linkUrl && linkText) {
+            content += `<a href="${linkUrl}" class="toast-link">${linkText}</a>`;
+        }
+        toast.innerHTML = content;
+        
+        container.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.classList.add('fade-out');
+            toast.addEventListener('animationend', () => {
+                container.removeChild(toast);
+            });
+        }, 4000); // Toast disappears after 4 seconds
+    }
 
     // =================================================================
     // API FUNCTIONS
@@ -118,6 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const flowers = await apiFetch('/flowers/');
             const availableFlowers = flowers.filter(f => f.status === 'available');
+            const cart = getCart();
             catalog.innerHTML = '';
 
             if (availableFlowers.length === 0) {
@@ -134,17 +156,26 @@ document.addEventListener('DOMContentLoaded', () => {
             
             catalog.classList.remove('is-empty');
             availableFlowers.forEach(flower => {
+                const itemInCart = cart[flower.id];
+                const displayQuantity = itemInCart ? flower.quantity - itemInCart.quantity : flower.quantity;
+
                 const flowerDiv = document.createElement('div');
                 flowerDiv.className = 'flower-item';
+                
+                // Hide the item if it's in the cart and the quantity is fully reserved.
+                if (displayQuantity <= 0) {
+                    flowerDiv.classList.add('hidden');
+                }
+
                 let actionHtml = `<p><a href="/static/login.html">Войдите</a>, чтобы добавить в корзину</p>`;
                 if (authToken) {
                     actionHtml = `
                         <div class="quantity-selector" data-id="${flower.id}" data-name="${flower.name}" data-price="${flower.price}" data-max-quantity="${flower.quantity}">
                             <button class="change-qty-btn" data-change="-1">-</button>
-                            <input type="number" class="quantity-input" value="1" min="1" max="${flower.quantity}">
+                            <input type="number" class="quantity-input" value="1" min="1" max="${displayQuantity > 0 ? displayQuantity : 1}">
                             <button class="change-qty-btn" data-change="1">+</button>
                         </div>
-                        <button class="add-to-cart-btn">Добавить в корзину</button>
+                        <button class="add-to-cart-btn" ${displayQuantity <= 0 ? 'disabled' : ''}>Добавить в корзину</button>
                     `;
                 }
                 flowerDiv.innerHTML = `
@@ -152,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3>${flower.name}</h3>
                     <p>${flower.description || ''}</p>
                     <p><strong>Цена:</strong> ${flower.price} руб.</p>
-                    <p><strong>В наличии:</strong> ${flower.quantity} шт.</p>
+                    <p><strong>В наличии:</strong> ${displayQuantity} шт.</p>
                     ${actionHtml}
                 `;
                 catalog.appendChild(flowerDiv);
@@ -209,7 +240,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (totalPrice < minimumOrderValue) {
             placeOrderBtn.disabled = true;
-            cartMinimumError.textContent = `Минимальная сумма заказа - ${minimumOrderValue} руб.`;
+            const remainingAmount = minimumOrderValue - totalPrice;
+            cartMinimumError.textContent = `Для оформления заказа добавьте еще товаров на ${remainingAmount.toFixed(2)} руб.`;
             cartMinimumError.style.display = 'block';
         } else {
             placeOrderBtn.disabled = false;
@@ -337,7 +369,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             cart[id] = { name, price: parseFloat(price), quantity: newQty, maxQuantity: parseInt(maxQuantity) };
             saveCart(cart);
-            alert(`Добавлено в корзину: ${name} (${quantity} шт)`);
+            showToast(`"${name}" (${quantity} шт) добавлено.`, '/static/cart.html', 'В корзину');
+            initCatalogPage(); // Re-render the catalog to update stock display
         }
         if (e.target.matches('.remove-from-cart-btn')) {
             const { id } = e.target.dataset;

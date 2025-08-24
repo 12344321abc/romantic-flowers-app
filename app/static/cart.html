@@ -8,6 +8,7 @@
     <link rel="icon" href="/static/img/favicon.png" type="image/png">
 </head>
 <body>
+    <div id="toast-container"></div>
     <div id="cart-view">
         <header>
              <h1><a href="/">Romantic Flower Farm</a></h1>
@@ -30,7 +31,7 @@
                     <label for="customer-comment">Комментарий к заказу (необязательно):</label>
                     <textarea id="customer-comment" name="customer-comment" rows="3"></textarea>
                 </div>
-                <p id="cart-minimum-error" class="error-message" style="margin-bottom: 1rem;"></p>
+                <p id="cart-minimum-error" class="info-message" style="margin-bottom: 1rem;"></p>
                 <button type="submit" id="place-order-btn">Оформить заказ</button>
             </form>
         </div>
