@@ -18,6 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- Order View Elements ---
     const orderList = document.getElementById('order-list');
+
+    // --- Modal Elements ---
+    const editFlowerModal = document.getElementById('edit-flower-modal');
+    const editFlowerForm = document.getElementById('edit-flower-form');
+    const closeButton = document.querySelector('.modal .close-button');
     
     const API_URL = '';
     let authToken = localStorage.getItem('authToken');
@@ -123,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <button class="add-btn" title="Добавить количество">+</button>
                             <button class="sell-btn" title="Продать количество">»</button>
                         </div>
+                        <button class="edit-btn" data-id="${flower.id}">Редактировать</button>
                         <button class="delete-btn" data-id="${flower.id}">Удалить партию</button>
                     </div>
                 `;
@@ -168,6 +174,43 @@ document.addEventListener('DOMContentLoaded', () => {
             await apiFetch(`/flowers/${flowerId}/add`, { method: 'PATCH', body: JSON.stringify({ quantity }) });
             fetchFlowers();
         } catch (error) { console.error('Failed to add quantity:', error); }
+    }
+
+    // ---- Edit Flower Modal Logic ----
+    function openEditModal(flower) {
+        document.getElementById('edit-flower-id').value = flower.id;
+        document.getElementById('edit-flower-name').value = flower.name;
+        document.getElementById('edit-flower-description').value = flower.description;
+        document.getElementById('edit-flower-price').value = flower.price;
+        document.getElementById('edit-flower-quantity').value = flower.quantity;
+        editFlowerModal.classList.add('is-open');
+    }
+
+    function closeEditModal() {
+        editFlowerModal.classList.remove('is-open');
+    }
+
+    async function updateFlower(event) {
+        event.preventDefault();
+        const flowerId = document.getElementById('edit-flower-id').value;
+        const updatedData = {
+            name: document.getElementById('edit-flower-name').value,
+            description: document.getElementById('edit-flower-description').value,
+            price: parseFloat(document.getElementById('edit-flower-price').value),
+            quantity: parseInt(document.getElementById('edit-flower-quantity').value, 10)
+        };
+
+        try {
+            await apiFetch(`/flowers/${flowerId}`, {
+                method: 'PUT',
+                body: JSON.stringify(updatedData)
+            });
+            closeEditModal();
+            fetchFlowers();
+        } catch (error) {
+            console.error('Failed to update flower:', error);
+            alert(`Ошибка: ${error.message}`);
+        }
     }
     
     // ---- Customers Logic ----
@@ -321,6 +364,26 @@ document.addEventListener('DOMContentLoaded', () => {
             if (target.classList.contains('add-btn')) addFlowerQuantity(flowerId, quantity);
             else if (target.classList.contains('sell-btn')) sellFlowers(flowerId, quantity);
             quantityInput.value = '';
+        }
+    });
+
+    flowerList.addEventListener('click', async (e) => {
+        if (e.target.classList.contains('edit-btn')) {
+            const flowerId = e.target.dataset.id;
+            try {
+                const flower = await apiFetch(`/flowers/${flowerId}`);
+                openEditModal(flower);
+            } catch (error) {
+                console.error('Failed to fetch flower details:', error);
+            }
+        }
+    });
+
+    editFlowerForm.addEventListener('submit', updateFlower);
+    closeButton.addEventListener('click', closeEditModal);
+    window.addEventListener('click', (event) => {
+        if (event.target == editFlowerModal) {
+            closeEditModal();
         }
     });
 

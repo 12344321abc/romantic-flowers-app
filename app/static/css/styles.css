@@ -253,6 +253,13 @@ header nav a {
 .delete-btn:hover {
     background-color: #a03c3c;
 }
+.edit-btn {
+   background-color: #4682B4; /* SteelBlue */
+   width: 100%;
+}
+.edit-btn:hover {
+   background-color: #41769F;
+}
 
 .empty-catalog-message {
     text-align: center;
@@ -490,4 +497,69 @@ header nav a {
         opacity: 0;
         transform: translateX(100%);
     }
+}
+
+/* =================================================================
+  MODAL STYLES
+  ================================================================= */
+.modal {
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+   top: 0;
+   width: 100%; /* Full width */
+   height: 100%; /* Full height */
+   overflow: auto; /* Enable scroll if needed */
+   background-color: rgba(0,0,0,0.5);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   visibility: hidden;
+   opacity: 0;
+   transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.is-open {
+   visibility: visible;
+   opacity: 1;
+}
+
+.modal-content {
+   background-color: #fefefe;
+   padding: 2rem;
+   border: 1px solid #888;
+   width: 80%;
+   max-width: 500px;
+   border-radius: 8px;
+   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+   position: relative;
+   animation: modal-in 0.3s ease-out;
+}
+
+@keyframes modal-in {
+   from {
+       transform: scale(0.9);
+       opacity: 0;
+   }
+   to {
+       transform: scale(1);
+       opacity: 1;
+   }
+}
+
+.close-button {
+   color: #aaa;
+   float: right;
+   font-size: 28px;
+   font-weight: bold;
+   position: absolute;
+   top: 10px;
+   right: 20px;
+}
+
+.close-button:hover,
+.close-button:focus {
+   color: black;
+   text-decoration: none;
+   cursor: pointer;
 }

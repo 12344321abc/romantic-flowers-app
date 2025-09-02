@@ -102,6 +102,13 @@ def read_flower(flower_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Flower not found")
     return db_flower
 
+@app.put("/flowers/{flower_id}", response_model=schemas.FlowerBatch)
+def update_flower_endpoint(flower_id: int, flower_update: schemas.FlowerBatchUpdate, db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_admin_user)):
+    db_flower = crud.update_flower(db, flower_id=flower_id, flower_update=flower_update)
+    if db_flower is None:
+        raise HTTPException(status_code=404, detail="Flower not found")
+    return db_flower
+
 @app.patch("/flowers/{flower_id}/sell", response_model=schemas.FlowerBatch)
 def sell_flower(flower_id: int, sell_request: schemas.SellRequest, db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_admin_user)):
     db_flower = crud.sell_flowers(db, flower_id=flower_id, quantity_to_sell=sell_request.quantity)

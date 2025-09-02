@@ -132,6 +132,19 @@ def create_flower_batch(db: Session, flower: schemas.FlowerBatchCreate):
     db.refresh(db_flower)
     return db_flower
 
+def update_flower(db: Session, flower_id: int, flower_update: schemas.FlowerBatchUpdate):
+    db_flower = get_flower(db, flower_id)
+    if not db_flower:
+        return None
+
+    update_data = flower_update.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_flower, key, value)
+    
+    db.commit()
+    db.refresh(db_flower)
+    return db_flower
+
 def sell_flowers(db: Session, flower_id: int, quantity_to_sell: int):
     db_flower = get_flower(db=db, flower_id=flower_id)
     if db_flower and db_flower.quantity >= quantity_to_sell:

@@ -12,6 +12,9 @@ flowers.db
 # VS Code settings
 .vscode/
 
+# Roo settings
+.roo/
+
 # macOS files
 .DS_Store
 # User-uploaded files
