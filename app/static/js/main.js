@@ -60,16 +60,29 @@ document.body.addEventListener('click', e => {
     
     // Изменение количества (+ / -)
     if (e.target.matches('.change-qty-btn')) {
-        const quantityInput = e.target.parentElement.querySelector('.quantity-input');
-        const currentValue = parseInt(quantityInput.value);
+        const parent = e.target.parentElement;
+        const quantityInput = parent.querySelector('.quantity-input');
+        const quantityDisplay = parent.querySelector('.quantity-display');
+        
+        // Определяем, работаем с input или span
+        const isInputMode = !!quantityInput;
+        const currentValue = isInputMode
+            ? parseInt(quantityInput.value)
+            : parseInt(quantityDisplay.textContent);
         const change = parseInt(e.target.dataset.change);
         const newValue = currentValue + change;
         
-        const min = parseInt(quantityInput.min) || 1;
-        const max = parseInt(quantityInput.max);
+        const min = isInputMode ? (parseInt(quantityInput.min) || 1) : 1;
+        const max = isInputMode
+            ? parseInt(quantityInput.max)
+            : parseInt(parent.dataset.displayMax);
         
         if (newValue >= min && (!max || newValue <= max)) {
-            quantityInput.value = newValue;
+            if (isInputMode) {
+                quantityInput.value = newValue;
+            } else {
+                quantityDisplay.textContent = newValue;
+            }
             
             // Если это корзина, обновляем количество
             if (e.target.closest('.cart-item-controls')) {

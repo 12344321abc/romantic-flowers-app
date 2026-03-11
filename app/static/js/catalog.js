@@ -53,9 +53,9 @@ export async function initCatalogPage() {
             let actionHtml = `<p class="login-prompt"><a href="/static/login.html">Войдите</a>, чтобы добавить в корзину</p>`;
             if (authToken) {
                 actionHtml = `
-                    <div class="quantity-selector" data-id="${flower.id}" data-name="${flower.name}" data-price="${flower.price}" data-max-quantity="${flower.quantity}">
+                    <div class="quantity-selector" data-id="${flower.id}" data-name="${flower.name}" data-price="${flower.price}" data-max-quantity="${flower.quantity}" data-display-max="${displayQuantity}">
                         <button class="change-qty-btn" data-change="-1">−</button>
-                        <input type="number" class="quantity-input" value="1" min="1" max="${displayQuantity > 0 ? displayQuantity : 1}">
+                        <span class="quantity-display">1</span>
                         <button class="change-qty-btn" data-change="1">+</button>
                     </div>
                     <button class="add-to-cart-btn" ${displayQuantity <= 0 ? 'disabled' : ''}>Добавить в корзину</button>
@@ -88,7 +88,8 @@ export async function initCatalogPage() {
  */
 export function handleAddToCart(flowerItem) {
     const quantitySelector = flowerItem.querySelector('.quantity-selector');
-    const quantity = parseInt(quantitySelector.querySelector('.quantity-input').value);
+    const quantityDisplay = quantitySelector.querySelector('.quantity-display');
+    const quantity = parseInt(quantityDisplay.textContent);
     const { id, name, price, maxQuantity } = quantitySelector.dataset;
 
     const cart = getCart();
