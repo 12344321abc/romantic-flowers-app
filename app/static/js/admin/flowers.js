@@ -97,11 +97,11 @@ export async function fetchFlowers(onUnauthorized) {
                 <div class="actions-container admin-actions">
                     <div class="admin-qty-row">
                         <input type="number" class="admin-qty-input" placeholder="Кол-во" min="1" data-id="${flower.id}">
-                        <button class="add-btn" data-id="${flower.id}" title="Добавить">＋ Пополнить</button>
-                        <button class="sell-btn" data-id="${flower.id}" title="Списать">－ Списать</button>
+                        <button class="add-btn" data-id="${flower.id}" title="Добавить">+ Добавить</button>
+                        <button class="sell-btn" data-id="${flower.id}" title="Списать">− Списать</button>
                     </div>
                     <div class="admin-btn-row">
-                        <button class="edit-btn" data-id="${flower.id}">✏️ Редактировать</button>
+                        <button class="edit-btn" data-id="${flower.id}">✏️ Изменить</button>
                         <button class="delete-btn" data-id="${flower.id}">🗑 Удалить</button>
                     </div>
                 </div>

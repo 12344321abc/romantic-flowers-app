@@ -1513,10 +1513,12 @@ button.loading::after {
     gap: var(--space-2);
     margin-bottom: var(--space-3);
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .admin-qty-input {
-    width: 80px;
+    width: 70px;
+    flex-shrink: 0;
     padding: var(--space-2) var(--space-3);
     border: 2px solid var(--color-border);
     border-radius: var(--radius-md);
@@ -1527,10 +1529,12 @@ button.loading::after {
 
 .admin-qty-row .add-btn,
 .admin-qty-row .sell-btn {
-    flex: 1;
-    padding: var(--space-2) var(--space-3);
-    font-size: 0.85rem;
+    flex: 1 1 auto;
+    min-width: 90px;
+    padding: var(--space-2) var(--space-4);
+    font-size: 0.9rem;
     border-radius: var(--radius-md);
+    white-space: nowrap;
 }
 
 .admin-qty-row .add-btn {
@@ -1557,12 +1561,29 @@ button.loading::after {
 .admin-btn-row .edit-btn,
 .admin-btn-row .delete-btn {
     flex: 1;
-    padding: var(--space-2) var(--space-3);
-    font-size: 0.85rem;
+    padding: var(--space-3) var(--space-4);
+    font-size: 0.9rem;
 }
 
 .flower-status {
     margin-top: var(--space-2);
+}
+
+/* Mobile adjustments for admin */
+@media (max-width: 400px) {
+    .admin-qty-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .admin-qty-input {
+        width: 100%;
+    }
+    
+    .admin-qty-row .add-btn,
+    .admin-qty-row .sell-btn {
+        width: 100%;
+    }
 }
 
 #broadcast-section {
