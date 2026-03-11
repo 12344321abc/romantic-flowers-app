@@ -696,33 +696,33 @@ footer a:hover {
 
 .flower-meta {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
+    justify-content: space-between;
+    align-items: center;
     margin-top: auto;
-    padding-top: var(--space-4);
+    padding-top: var(--space-3);
     border-top: 1px solid var(--color-border-light);
 }
 
 .flower-price {
     color: var(--color-primary);
     font-weight: 700;
-    font-size: 1.5rem;
-    line-height: 1.2;
+    font-size: 1.25rem;
 }
 
 .flower-stock {
     color: var(--color-text-muted);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    background: var(--color-bg-secondary);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
 }
 
 .actions-container {
-    padding: var(--space-5);
-    padding-top: var(--space-4);
+    padding: var(--space-4);
+    padding-top: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
-    background: var(--color-bg-secondary);
-    border-top: 1px solid var(--color-border-light);
+    gap: var(--space-3);
 }
 
 .login-prompt {
@@ -752,18 +752,18 @@ footer a:hover {
 .quantity-selector {
     display: flex;
     align-items: center;
-    justify-content: center;
+    margin-bottom: var(--space-3);
 }
 
 .quantity-selector button {
-    width: 44px;
-    height: 44px;
+    width: 36px;
+    height: 36px;
     padding: 0;
-    font-size: 1.3rem;
-    line-height: 44px;
+    font-size: 1.1rem;
+    line-height: 32px;
     text-align: center;
     flex-shrink: 0;
-    background: var(--color-bg-card);
+    background: var(--color-bg-secondary);
     color: var(--color-primary);
     box-shadow: none;
     border: 2px solid var(--color-border);
@@ -781,22 +781,26 @@ footer a:hover {
 
 .quantity-selector button:hover {
     background: var(--color-primary-soft);
-    border-color: var(--color-primary-light);
+    transform: none;
+}
+
+.quantity-selector button:active {
+    transform: none;
 }
 
 .quantity-display {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 50px;
-    height: 44px;
-    padding: 0 var(--space-3);
-    font-size: 1.1rem;
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--color-text-primary);
     background: var(--color-bg-card);
-    border-top: 2px solid var(--color-border);
-    border-bottom: 2px solid var(--color-border);
+    border: 2px solid var(--color-border);
+    border-left: none;
+    border-right: none;
 }
 
 .quantity-control input {
