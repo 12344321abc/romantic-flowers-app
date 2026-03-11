@@ -69,12 +69,14 @@ export function initCartPage() {
         itemDiv.innerHTML = `
             <div class="cart-item-info">
                <span>${item.name}</span>
-               <span>${formatCurrency(item.price * item.quantity)} руб.</span>
+               <span>${formatCurrency(item.price * item.quantity)} ₽</span>
             </div>
             <div class="cart-item-controls">
-                <button class="change-qty-btn" data-id="${id}" data-change="-1">-</button>
-                <input type="number" class="quantity-input" value="${item.quantity}" min="1" max="${item.maxQuantity}" data-id="${id}">
-                <button class="change-qty-btn" data-id="${id}" data-change="1">+</button>
+                <div class="quantity-selector" data-id="${id}" data-display-max="${item.maxQuantity}">
+                    <button class="change-qty-btn" data-id="${id}" data-change="-1">−</button>
+                    <span class="quantity-display">${item.quantity}</span>
+                    <button class="change-qty-btn" data-id="${id}" data-change="1">+</button>
+                </div>
                 <button class="remove-from-cart-btn" data-id="${id}">Удалить</button>
             </div>
         `;

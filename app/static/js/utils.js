@@ -61,10 +61,10 @@ export function showToast(message, linkUrl, linkText) {
 }
 
 /**
- * Форматировать число как валюту
+ * Форматировать число как валюту с разделителем тысяч
  * @param {number} value - Значение
  * @returns {string} Форматированная строка
  */
 export function formatCurrency(value) {
-    return value.toFixed(2);
+    return value.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }

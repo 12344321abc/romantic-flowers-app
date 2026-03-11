@@ -96,9 +96,10 @@ document.body.addEventListener('click', e => {
         
         // Если это корзина, обновляем количество
         if (e.target.closest('.cart-item-controls')) {
-            const { id } = e.target.dataset;
-            if (id) {
-                updateCartQuantity(id, newValue);
+            const selector = e.target.closest('.quantity-selector');
+            const itemId = selector?.dataset.id || e.target.dataset.id;
+            if (itemId) {
+                updateCartQuantity(itemId, newValue);
             }
         }
     }
