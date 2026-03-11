@@ -49,14 +49,14 @@
                             <label for="flower-description">Описание</label>
                             <textarea id="flower-description" placeholder="Опишите цветы: страна происхождения, высота, особенности..." required></textarea>
                         </div>
-                        <div class="form-row" style="display: flex; gap: 1rem;">
-                            <div class="form-group" style="flex: 1;">
+                        <div class="form-row">
+                            <div class="form-group">
                                 <label for="flower-price">Цена (₽)</label>
-                                <input type="number" id="flower-price" placeholder="0" required>
+                                <input type="number" id="flower-price" placeholder="150" min="1" required>
                             </div>
-                            <div class="form-group" style="flex: 1;">
+                            <div class="form-group">
                                 <label for="flower-quantity">Количество (шт)</label>
-                                <input type="number" id="flower-quantity" placeholder="0" required>
+                                <input type="number" id="flower-quantity" placeholder="100" min="1" required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -77,23 +77,23 @@
                 <section id="add-customer-form">
                     <h2>➕ Добавить нового клиента</h2>
                     <form id="customer-form">
-                        <div class="form-row" style="display: flex; gap: 1rem;">
-                            <div class="form-group" style="flex: 1;">
-                                <label for="customer-username">Логин</label>
-                                <input type="text" id="customer-username" placeholder="Логин для входа" required>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="customer-username">Логин для входа</label>
+                                <input type="text" id="customer-username" placeholder="client_shop" required>
                             </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label for="customer-contact-name">Имя / Название</label>
-                                <input type="text" id="customer-contact-name" placeholder="Имя или название магазина" required>
+                            <div class="form-group">
+                                <label for="customer-contact-name">Контактное лицо / Компания</label>
+                                <input type="text" id="customer-contact-name" placeholder="ООО «Флора» / Иван Петров" required>
                             </div>
                         </div>
-                        <div class="form-row" style="display: flex; gap: 1rem;">
-                            <div class="form-group" style="flex: 1;">
+                        <div class="form-row">
+                            <div class="form-group">
                                 <label for="customer-password">Пароль</label>
-                                <input type="password" id="customer-password" placeholder="Придумайте пароль" required>
+                                <input type="password" id="customer-password" placeholder="Минимум 3 символа" required>
                             </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label for="customer-password-confirm">Подтверждение пароля</label>
+                            <div class="form-group">
+                                <label for="customer-password-confirm">Подтвердите пароль</label>
                                 <input type="password" id="customer-password-confirm" placeholder="Повторите пароль" required>
                             </div>
                         </div>
@@ -146,14 +146,14 @@
                     <label for="edit-flower-description">Описание</label>
                     <textarea id="edit-flower-description" placeholder="Описание" required></textarea>
                 </div>
-                <div class="form-row" style="display: flex; gap: 1rem;">
-                    <div class="form-group" style="flex: 1;">
+                <div class="form-row">
+                    <div class="form-group">
                         <label for="edit-flower-price">Цена (₽)</label>
-                        <input type="number" id="edit-flower-price" placeholder="Цена" required>
+                        <input type="number" id="edit-flower-price" placeholder="150" min="1" required>
                     </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label for="edit-flower-quantity">Количество (шт)</label>
-                        <input type="number" id="edit-flower-quantity" placeholder="Количество" required>
+                    <div class="form-group">
+                        <label for="edit-flower-quantity">Остаток (шт)</label>
+                        <input type="number" id="edit-flower-quantity" placeholder="100" min="0" required>
                     </div>
                 </div>
                 <button type="submit">💾 Сохранить изменения</button>

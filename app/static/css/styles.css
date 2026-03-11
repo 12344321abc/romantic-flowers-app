@@ -90,11 +90,6 @@
 }
 
 /* =================================================================
-   FONT LOADING
-   ================================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-/* =================================================================
    BASE & RESET
    ================================================================= */
 *, *::before, *::after {
@@ -399,6 +394,31 @@ input[type="file"] {
 
 input[type="file"]:hover {
     background: var(--color-border-light);
+}
+
+/* Form row for horizontal layout */
+.form-row {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+}
+
+.form-row .form-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Horizontal divider */
+hr {
+    border: none;
+    height: 1px;
+    background: var(--color-border-light);
+    margin: var(--space-6) 0;
+}
+
+hr.divider-thick {
+    height: 2px;
+    background: var(--gradient-romantic);
 }
 
 /* =================================================================
@@ -1641,11 +1661,26 @@ button.loading::after {
 .empty-state p {
     font-size: 1.1rem;
     color: var(--color-text-secondary);
+    margin-bottom: var(--space-2);
+}
+
+.empty-state-hint {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
     margin-bottom: var(--space-6);
 }
 
 .empty-state .button {
     margin-top: var(--space-2);
+}
+
+/* Cart notice message */
+.cart-notice {
+    margin-bottom: var(--space-4);
+}
+
+.cart-notice:empty {
+    display: none;
 }
 
 /* =================================================================

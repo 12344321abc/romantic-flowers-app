@@ -22,31 +22,32 @@
         </header>
 
         <main>
-            <h2>🛒 Ваша корзина</h2>
+            <h2>Ваша корзина</h2>
             <div id="cart-items-container">
                 <!-- Cart items will be rendered here by JavaScript -->
             </div>
             <div id="cart-summary">
                 <div class="cart-total-row">
-                    <span class="cart-total-label">Итого к оплате:</span>
+                    <span class="cart-total-label">Сумма заказа:</span>
                     <span class="cart-total-value"><span id="cart-total-price">0</span> ₽</span>
                 </div>
                 <hr>
-                <h3>Оформление заказа</h3>
+                <h3>Оформить заказ</h3>
                 <form id="order-form">
                     <div class="form-group">
-                        <label for="customer-comment">Комментарий к заказу (необязательно)</label>
-                        <textarea id="customer-comment" name="customer-comment" rows="3" placeholder="Укажите пожелания по доставке или особые требования"></textarea>
+                        <label for="customer-comment">Комментарий (необязательно)</label>
+                        <textarea id="customer-comment" name="customer-comment" rows="3" placeholder="Особые пожелания, время доставки, контактный телефон..."></textarea>
                     </div>
-                    <p id="cart-minimum-error" class="info-message" style="margin-bottom: 1rem;"></p>
-                    <button type="submit" id="place-order-btn">✓ Оформить заказ</button>
+                    <p id="cart-minimum-error" class="info-message cart-notice"></p>
+                    <button type="submit" id="place-order-btn">Подтвердить заказ</button>
                 </form>
             </div>
             <div id="cart-empty-message" class="hidden">
                 <div class="empty-state">
                     <span class="empty-state-icon">🛒</span>
-                    <p>Ваша корзина пуста</p>
-                    <a href="/" class="button">Перейти в каталог</a>
+                    <p>В корзине пока ничего нет</p>
+                    <p class="empty-state-hint">Добавьте цветы из каталога, чтобы оформить заказ</p>
+                    <a href="/" class="button">Перейти к каталогу</a>
                 </div>
             </div>
         </main>

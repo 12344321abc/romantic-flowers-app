@@ -22,12 +22,12 @@
         </header>
 
         <main>
-            <h2>👤 Личный кабинет</h2>
+            <h2>Личный кабинет</h2>
             <div id="account-info">
-                <h3>Информация о клиенте</h3>
+                <h3>Ваши данные</h3>
                 <div class="account-details">
                     <div class="account-detail-item">
-                        <span class="detail-label">Имя</span>
+                        <span class="detail-label">Контакт</span>
                         <span class="detail-value" id="user-contact-name"></span>
                     </div>
                     <div class="account-detail-item">
@@ -42,14 +42,15 @@
             </div>
             
             <div id="order-history">
-                <h3>📦 История ваших заказов</h3>
+                <h3>История заказов</h3>
                 <div id="order-history-container">
                     <!-- Order history will be rendered here by JavaScript -->
                 </div>
                 <div id="no-orders-message" class="hidden empty-state">
                     <span class="empty-state-icon">📦</span>
-                    <p>У вас пока нет заказов</p>
-                    <a href="/" class="button">Перейти в каталог</a>
+                    <p>Заказов пока нет</p>
+                    <p class="empty-state-hint">Здесь появятся все ваши оформленные заказы</p>
+                    <a href="/" class="button">Перейти к каталогу</a>
                 </div>
             </div>
         </main>
