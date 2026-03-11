@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#8B2F5E">
     <title>Вход для клиентов - Romantic Flower Farm</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="icon" href="/static/img/favicon.png" type="image/png">
 </head>
@@ -11,32 +15,34 @@
     <div id="toast-container"></div>
     <div id="login-view">
         <header>
-            <h1><a href="/">Romantic Flower Farm</a></h1>
+            <h1><a href="/">🌸 Romantic Flower Farm</a></h1>
             <nav id="main-nav">
                 <!-- Nav links will be updated by JS -->
             </nav>
         </header>
 
         <main>
-            <h2>Вход для оптовых клиентов</h2>
-            <form id="login-form">
-                <div class="form-group">
-                    <label for="username">Логин:</label>
-                    <input type="text" id="username" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Пароль:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit">Войти</button>
-                <p id="login-error" class="error-message"></p>
-            </form>
+            <div class="login-container">
+                <h2>Вход для оптовых клиентов</h2>
+                <p class="login-subtitle">Введите свои учётные данные для доступа к каталогу</p>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">Логин</label>
+                        <input type="text" id="username" name="username" placeholder="Введите логин" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Пароль</label>
+                        <input type="password" id="password" name="password" placeholder="Введите пароль" required autocomplete="current-password">
+                    </div>
+                    <button type="submit">Войти в систему</button>
+                    <p id="login-error" class="error-message"></p>
+                </form>
+            </div>
         </main>
         <footer>
             <p><a href="https://t.me/romantic_shopping_bot" target="_blank" rel="noopener noreferrer">🔔 Оповещения о новых поставках в Telegram</a></p>
             <p>&copy; 2025 Romantic Flower Farm. Все права защищены.</p>
         </footer>
-
     </div>
     <script type="module" src="/static/js/main.js"></script>
 </body>

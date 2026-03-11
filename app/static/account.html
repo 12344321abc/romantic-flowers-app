@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#8B2F5E">
     <title>Личный кабинет - Romantic Flower Farm</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="icon" href="/static/img/favicon.png" type="image/png">
 </head>
@@ -11,27 +15,42 @@
     <div id="toast-container"></div>
     <div id="shop-view">
         <header>
-            <h1><a href="/">Romantic Flower Farm</a></h1>
+            <h1><a href="/">🌸 Romantic Flower Farm</a></h1>
             <nav id="main-nav">
                 <!-- Nav links will be updated by JS -->
             </nav>
         </header>
 
         <main>
-            <h2>Личный кабинет</h2>
+            <h2>👤 Личный кабинет</h2>
             <div id="account-info">
                 <h3>Информация о клиенте</h3>
-                <p><strong>Имя:</strong> <span id="user-contact-name"></span></p>
-                <p><strong>Логин:</strong> <span id="user-username"></span></p>
-                <p><strong>Адрес:</strong> <span id="user-address"></span></p>
+                <div class="account-details">
+                    <div class="account-detail-item">
+                        <span class="detail-label">Имя</span>
+                        <span class="detail-value" id="user-contact-name"></span>
+                    </div>
+                    <div class="account-detail-item">
+                        <span class="detail-label">Логин</span>
+                        <span class="detail-value" id="user-username"></span>
+                    </div>
+                    <div class="account-detail-item">
+                        <span class="detail-label">Адрес доставки</span>
+                        <span class="detail-value" id="user-address"></span>
+                    </div>
+                </div>
             </div>
-            <hr>
+            
             <div id="order-history">
-                <h3>История ваших заказов</h3>
+                <h3>📦 История ваших заказов</h3>
                 <div id="order-history-container">
                     <!-- Order history will be rendered here by JavaScript -->
                 </div>
-                <p id="no-orders-message" class="hidden">У вас пока нет заказов.</p>
+                <div id="no-orders-message" class="hidden empty-state">
+                    <span class="empty-state-icon">📦</span>
+                    <p>У вас пока нет заказов</p>
+                    <a href="/" class="button">Перейти в каталог</a>
+                </div>
             </div>
         </main>
 
