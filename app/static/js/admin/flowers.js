@@ -76,21 +76,34 @@ export async function fetchFlowers(onUnauthorized) {
         flowers.forEach(flower => {
             const flowerDiv = document.createElement('div');
             flowerDiv.className = 'flower-item';
+            
+            const statusText = flower.status === 'available' ? 'В продаже' :
+                              flower.status === 'sold_out' ? 'Распродано' : flower.status;
+            const statusClass = flower.status === 'available' ? 'status-ready' : 'status-completed';
+            
             flowerDiv.innerHTML = `
                 <img src="${flower.image_url}" alt="${flower.name}">
-                <h3>${flower.name}</h3>
-                <p>${flower.description}</p>
-                <p><strong>Цена:</strong> ${flower.price} руб.</p>
-                <p><strong>Остаток:</strong> ${flower.quantity} шт.</p>
-                <p><strong>Статус:</strong> ${flower.status}</p>
-                <div class="actions-container">
-                    <div class="quantity-control" data-id="${flower.id}">
-                        <input type="number" class="quantity-input" placeholder="Кол-во" min="1">
-                        <button class="add-btn" title="Добавить количество">+</button>
-                        <button class="sell-btn" title="Продать количество">»</button>
+                <div class="flower-content">
+                    <h3>${flower.name}</h3>
+                    <p class="flower-description">${flower.description}</p>
+                    <div class="flower-meta">
+                        <span class="flower-price">${flower.price} ₽</span>
+                        <span class="flower-stock">Остаток: ${flower.quantity} шт.</span>
                     </div>
-                    <button class="edit-btn" data-id="${flower.id}">Редактировать</button>
-                    <button class="delete-btn" data-id="${flower.id}">Удалить партию</button>
+                    <div class="flower-status">
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </div>
+                </div>
+                <div class="actions-container admin-actions">
+                    <div class="admin-qty-row">
+                        <input type="number" class="admin-qty-input" placeholder="Кол-во" min="1" data-id="${flower.id}">
+                        <button class="add-btn" data-id="${flower.id}" title="Добавить">＋ Пополнить</button>
+                        <button class="sell-btn" data-id="${flower.id}" title="Списать">－ Списать</button>
+                    </div>
+                    <div class="admin-btn-row">
+                        <button class="edit-btn" data-id="${flower.id}">✏️ Редактировать</button>
+                        <button class="delete-btn" data-id="${flower.id}">🗑 Удалить</button>
+                    </div>
                 </div>
             `;
             flowerList.appendChild(flowerDiv);

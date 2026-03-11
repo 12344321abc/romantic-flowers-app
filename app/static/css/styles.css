@@ -919,6 +919,14 @@ footer a:hover {
     display: flex;
     align-items: center;
     gap: var(--space-3);
+    flex-wrap: nowrap;
+}
+
+.cart-item-controls .quantity-selector {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-bottom: 0;
 }
 
 .quantity-selector button {
@@ -1491,6 +1499,70 @@ button.loading::after {
     padding: var(--space-6);
     border-radius: var(--radius-lg);
     margin-bottom: var(--space-6);
+}
+
+/* Admin flower card actions */
+.admin-actions {
+    padding: var(--space-4);
+    background: var(--color-bg-secondary);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.admin-qty-row {
+    display: flex;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+    align-items: center;
+}
+
+.admin-qty-input {
+    width: 80px;
+    padding: var(--space-2) var(--space-3);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.admin-qty-row .add-btn,
+.admin-qty-row .sell-btn {
+    flex: 1;
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.85rem;
+    border-radius: var(--radius-md);
+}
+
+.admin-qty-row .add-btn {
+    background: linear-gradient(135deg, #4CAF7D 0%, #3D9268 100%);
+}
+
+.admin-qty-row .add-btn:hover {
+    background: linear-gradient(135deg, #3D9268 0%, #2E7B55 100%);
+}
+
+.admin-qty-row .sell-btn {
+    background: linear-gradient(135deg, #E5A84B 0%, #D49A3A 100%);
+}
+
+.admin-qty-row .sell-btn:hover {
+    background: linear-gradient(135deg, #D49A3A 0%, #C48B2B 100%);
+}
+
+.admin-btn-row {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.admin-btn-row .edit-btn,
+.admin-btn-row .delete-btn {
+    flex: 1;
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.85rem;
+}
+
+.flower-status {
+    margin-top: var(--space-2);
 }
 
 #broadcast-section {

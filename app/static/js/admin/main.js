@@ -207,12 +207,12 @@ async function handleFlowerListClick(e) {
         return;
     }
     
-    // Управление количеством
-    const quantityControl = target.closest('.quantity-control');
-    if (quantityControl && target.tagName === 'BUTTON') {
-        const flowerId = quantityControl.dataset.id;
-        const quantityInput = quantityControl.querySelector('.quantity-input');
-        const quantity = parseInt(quantityInput.value, 10);
+    // Управление количеством (добавить/списать)
+    if (target.classList.contains('add-btn') || target.classList.contains('sell-btn')) {
+        const flowerId = target.dataset.id;
+        const actionsContainer = target.closest('.admin-actions');
+        const quantityInput = actionsContainer?.querySelector('.admin-qty-input');
+        const quantity = parseInt(quantityInput?.value, 10);
         
         if (isNaN(quantity) || quantity <= 0) {
             alert('Введите корректное количество.');
@@ -225,7 +225,7 @@ async function handleFlowerListClick(e) {
             sellFlowers(flowerId, quantity, logout);
         }
         
-        quantityInput.value = '';
+        if (quantityInput) quantityInput.value = '';
     }
 }
 
