@@ -50,11 +50,11 @@ export async function initCatalogPage() {
                 flowerDiv.classList.add('hidden');
             }
 
-            let actionHtml = `<p><a href="/static/login.html">Войдите</a>, чтобы добавить в корзину</p>`;
+            let actionHtml = `<p class="login-prompt"><a href="/static/login.html">Войдите</a>, чтобы добавить в корзину</p>`;
             if (authToken) {
                 actionHtml = `
                     <div class="quantity-selector" data-id="${flower.id}" data-name="${flower.name}" data-price="${flower.price}" data-max-quantity="${flower.quantity}">
-                        <button class="change-qty-btn" data-change="-1">-</button>
+                        <button class="change-qty-btn" data-change="-1">−</button>
                         <input type="number" class="quantity-input" value="1" min="1" max="${displayQuantity > 0 ? displayQuantity : 1}">
                         <button class="change-qty-btn" data-change="1">+</button>
                     </div>
@@ -63,11 +63,17 @@ export async function initCatalogPage() {
             }
             flowerDiv.innerHTML = `
                 <img src="${flower.image_url}" alt="${flower.name}">
-                <h3>${flower.name}</h3>
-                <p>${flower.description || ''}</p>
-                <p><strong>Цена:</strong> ${flower.price} руб.</p>
-                <p><strong>В наличии:</strong> ${displayQuantity} шт.</p>
-                ${actionHtml}
+                <div class="flower-content">
+                    <h3>${flower.name}</h3>
+                    <p class="flower-description">${flower.description || ''}</p>
+                    <div class="flower-meta">
+                        <span class="flower-price">${flower.price} ₽</span>
+                        <span class="flower-stock">В наличии: ${displayQuantity} шт.</span>
+                    </div>
+                </div>
+                <div class="actions-container">
+                    ${actionHtml}
+                </div>
             `;
             catalog.appendChild(flowerDiv);
         });
