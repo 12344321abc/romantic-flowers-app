@@ -3,7 +3,7 @@
  * Инициализирует все страницы и обработчики событий
  */
 
-import { getElement, getCart, saveCart } from './utils.js';
+import { getElement, getCart, saveCart, showToast } from './utils.js';
 import { getAuthToken } from './api.js';
 import { updateNav, logout } from './navigation.js';
 import { initCatalogPage, handleAddToCart } from './catalog.js';
@@ -77,19 +77,28 @@ document.body.addEventListener('click', e => {
             ? parseInt(quantityInput.max)
             : parseInt(parent.dataset.displayMax);
         
-        if (newValue >= min && (!max || newValue <= max)) {
-            if (isInputMode) {
-                quantityInput.value = newValue;
-            } else {
-                quantityDisplay.textContent = newValue;
-            }
-            
-            // Если это корзина, обновляем количество
-            if (e.target.closest('.cart-item-controls')) {
-                const { id } = e.target.dataset;
-                if (id) {
-                    updateCartQuantity(id, newValue);
-                }
+        if (newValue < min) {
+            // Достигнут минимум
+            return;
+        }
+        
+        if (max && newValue > max) {
+            // Достигнут максимум - показываем уведомление
+            showToast(`Доступно только ${max} шт.`);
+            return;
+        }
+        
+        if (isInputMode) {
+            quantityInput.value = newValue;
+        } else {
+            quantityDisplay.textContent = newValue;
+        }
+        
+        // Если это корзина, обновляем количество
+        if (e.target.closest('.cart-item-controls')) {
+            const { id } = e.target.dataset;
+            if (id) {
+                updateCartQuantity(id, newValue);
             }
         }
     }
