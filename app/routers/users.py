@@ -69,6 +69,19 @@ def read_users(
     return users
 
 
+@router.get("/paginated/", response_model=schemas.PaginatedResponse[schemas.User])
+def read_users_paginated(
+    page: int = 1,
+    per_page: int = 20,
+    db: Session = Depends(get_db),
+    admin_user: schemas.User = Depends(get_current_admin_user)
+):
+    """
+    Получить список пользователей с пагинацией (только для админа)
+    """
+    return crud.get_users_paginated(db, page=page, per_page=per_page)
+
+
 @router.get("/me/", response_model=schemas.User)
 async def read_users_me(
     current_user: schemas.User = Depends(get_current_user)
@@ -77,6 +90,28 @@ async def read_users_me(
     Получить данные текущего пользователя
     """
     return current_user
+
+
+@router.patch("/me/", response_model=schemas.User)
+async def update_users_me(
+    user_update: schemas.UserSelfUpdate,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user)
+):
+    """
+    Обновить профиль текущего пользователя (только для клиентов).
+    Доступные поля: contact_name, address, password
+    """
+    if current_user.role == 'admin':
+        raise HTTPException(
+            status_code=403,
+            detail="Admins should use the admin panel to update their profile"
+        )
+    
+    db_user = crud.update_user_self(db, user_id=current_user.id, user_update=user_update)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_user
 
 
 @router.get("/me/admin/", response_model=schemas.User)

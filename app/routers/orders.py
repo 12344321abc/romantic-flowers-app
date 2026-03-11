@@ -86,6 +86,29 @@ def read_orders(
     return orders
 
 
+@router.get("/paginated/", response_model=schemas.PaginatedResponse[schemas.Order])
+def read_orders_paginated(
+    page: int = 1,
+    per_page: int = 20,
+    db: Session = Depends(get_db),
+    admin_user: schemas.User = Depends(get_current_admin_user)
+):
+    """
+    Получить все заказы с пагинацией (только для админа)
+    """
+    return crud.get_orders_paginated(db, page=page, per_page=per_page)
+
+
+@router.get("/statuses/list")
+def get_order_statuses(
+    admin_user: schemas.User = Depends(get_current_admin_user)
+):
+    """
+    Получить список доступных статусов заказа (только для админа)
+    """
+    return [status.value for status in schemas.OrderStatus]
+
+
 @router.get("/{order_id}", response_model=schemas.Order)
 def read_order(
     order_id: int,
@@ -103,4 +126,23 @@ def read_order(
     if current_user.role != 'admin' and db_order.customer_id != current_user.id:
         raise HTTPException(status_code=403, detail="Not allowed to view this order")
         
+    return db_order
+
+
+@router.patch("/{order_id}/status", response_model=schemas.Order)
+def update_order_status(
+    order_id: int,
+    status_update: schemas.OrderStatusUpdate,
+    db: Session = Depends(get_db),
+    admin_user: schemas.User = Depends(get_current_admin_user)
+):
+    """
+    Обновить статус заказа (только для админа).
+    Доступные статусы: new, processing, ready, completed, cancelled
+    """
+    db_order = crud.update_order_status(db, order_id=order_id, new_status=status_update.status)
+    
+    if db_order is None:
+        raise HTTPException(status_code=404, detail="Order not found")
+    
     return db_order

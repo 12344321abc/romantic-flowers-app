@@ -4,6 +4,23 @@
 
 import { getElement } from './utils.js';
 import { login } from './api.js';
+import { validateForm, setupLiveValidation, rules } from './validation.js';
+
+// Правила валидации для формы логина
+const loginValidationRules = {
+    'username': [rules.required, rules.username],
+    'password': [rules.required, rules.password]
+};
+
+/**
+ * Инициализация валидации на странице логина
+ */
+export function initLoginValidation() {
+    const form = getElement('login-form');
+    if (form) {
+        setupLiveValidation(form, loginValidationRules);
+    }
+}
 
 /**
  * Обработчик формы входа
@@ -11,14 +28,16 @@ import { login } from './api.js';
  */
 export async function handleLogin(e) {
     e.preventDefault();
+    const form = e.target;
     const loginError = getElement('login-error');
-    const username = getElement('username')?.value;
-    const password = getElement('password')?.value;
-
-    if (!username || !password) {
-        if (loginError) loginError.textContent = 'Введите логин и пароль';
+    
+    // Валидируем форму
+    if (!validateForm(form, loginValidationRules)) {
         return;
     }
+    
+    const username = getElement('username')?.value;
+    const password = getElement('password')?.value;
 
     try {
         await login(username, password);

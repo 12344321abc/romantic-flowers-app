@@ -11,6 +11,51 @@ def get_flower(db: Session, flower_id: int):
 def get_flowers(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.FlowerBatch).offset(skip).limit(limit).all()
 
+
+def get_flowers_paginated(db: Session, page: int = 1, per_page: int = 20):
+    """Get flowers with pagination metadata"""
+    query = db.query(models.FlowerBatch)
+    total = query.count()
+    items = query.offset((page - 1) * per_page).limit(per_page).all()
+    pages = (total + per_page - 1) // per_page  # Ceiling division
+    return {
+        "items": items,
+        "total": total,
+        "page": page,
+        "per_page": per_page,
+        "pages": pages
+    }
+
+
+def get_users_paginated(db: Session, page: int = 1, per_page: int = 20):
+    """Get users with pagination metadata"""
+    query = db.query(models.User)
+    total = query.count()
+    items = query.offset((page - 1) * per_page).limit(per_page).all()
+    pages = (total + per_page - 1) // per_page
+    return {
+        "items": items,
+        "total": total,
+        "page": page,
+        "per_page": per_page,
+        "pages": pages
+    }
+
+
+def get_orders_paginated(db: Session, page: int = 1, per_page: int = 20):
+    """Get orders with pagination metadata"""
+    query = db.query(models.Order).order_by(models.Order.created_at.desc())
+    total = query.count()
+    items = query.offset((page - 1) * per_page).limit(per_page).all()
+    pages = (total + per_page - 1) // per_page
+    return {
+        "items": items,
+        "total": total,
+        "page": page,
+        "per_page": per_page,
+        "pages": pages
+    }
+
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
@@ -57,6 +102,30 @@ def update_user(db: Session, user_id: int, user_update: schemas.UserUpdate):
     db.refresh(db_user)
     return db_user
 
+
+def update_user_self(db: Session, user_id: int, user_update: schemas.UserSelfUpdate):
+    """Update user's own profile with limited fields"""
+    db_user = get_user(db, user_id)
+    if not db_user:
+        return None
+    
+    update_data = user_update.dict(exclude_unset=True)
+    
+    if "password" in update_data and update_data["password"]:
+        from .auth import get_password_hash
+        hashed_password = get_password_hash(update_data["password"])
+        db_user.hashed_password = hashed_password
+    
+    # Update allowed fields
+    if "contact_name" in update_data:
+        db_user.contact_name = update_data["contact_name"]
+    if "address" in update_data:
+        db_user.address = update_data["address"]
+            
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
 def delete_user(db: Session, user_id: int):
     db_user = get_user(db, user_id)
     if db_user:
@@ -79,6 +148,19 @@ def get_orders(db: Session, skip: int = 0, limit: int = 100):
 
 def get_orders_by_customer(db: Session, customer_id: int):
     return db.query(models.Order).filter(models.Order.customer_id == customer_id).order_by(models.Order.created_at.desc()).all()
+
+
+def update_order_status(db: Session, order_id: int, new_status: schemas.OrderStatus):
+    """Update order status. Returns the updated order or None if not found."""
+    db_order = get_order(db, order_id)
+    if not db_order:
+        return None
+    
+    db_order.status = new_status.value
+    db.commit()
+    db.refresh(db_order)
+    return db_order
+
 
 def create_order(db: Session, order: schemas.OrderCreate, customer_id: int):
     db_order = models.Order(

@@ -61,6 +61,18 @@ def read_flowers(
     return flowers
 
 
+@router.get("/paginated/", response_model=schemas.PaginatedResponse[schemas.FlowerBatch])
+def read_flowers_paginated(
+    page: int = 1,
+    per_page: int = 20,
+    db: Session = Depends(get_db)
+):
+    """
+    Получить список цветов с пагинацией
+    """
+    return crud.get_flowers_paginated(db, page=page, per_page=per_page)
+
+
 @router.get("/{flower_id}", response_model=schemas.FlowerBatch)
 def read_flower(
     flower_id: int,

@@ -5,6 +5,16 @@
 import { getElement, formatCurrency } from './utils.js';
 import { apiFetch, getAuthToken } from './api.js';
 import { logout } from './navigation.js';
+import { showContainerSpinner } from './loading.js';
+
+// Локализация статусов заказов
+const statusLabels = {
+    'new': 'Новый',
+    'processing': 'В обработке',
+    'ready': 'Готов к выдаче',
+    'completed': 'Завершён',
+    'cancelled': 'Отменён'
+};
 
 /**
  * Инициализация страницы личного кабинета
@@ -18,6 +28,9 @@ export async function initAccountPage() {
     
     const container = getElement('order-history-container');
     if (!container) return;
+    
+    // Показываем спиннер пока загружаются данные
+    showContainerSpinner(container);
     
     try {
         const [user, orders, flowers] = await Promise.all([
@@ -55,12 +68,15 @@ export async function initAccountPage() {
                 return `<li><b>${name}</b> - ${item.quantity} шт. по цене ${formatCurrency(item.price_at_time_of_order)} руб.</li>`
             }).join('');
             
+            const statusLabel = statusLabels[order.status] || order.status;
+            
             orderDiv.innerHTML = `
                 <h4>Заказ #${order.id} от ${new Date(order.created_at).toLocaleString()}</h4>
-                <p><strong>Статус:</strong> ${order.status}</p>
+                <p><strong>Статус:</strong> <span class="status-badge status-${order.status}">${statusLabel}</span></p>
                 <p><strong>Комментарий:</strong> ${order.customer_comment || 'Нет'}</p>
                 <ul>${itemsHtml}</ul>
             `;
+            orderDiv.dataset.status = order.status;
             container.appendChild(orderDiv);
         });
 

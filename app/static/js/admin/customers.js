@@ -3,10 +3,23 @@
  */
 
 import { apiFetch } from './api.js';
+import { validateForm, setupLiveValidation, rules } from '../validation.js';
+import { showContainerSpinner } from '../loading.js';
 
 // DOM элементы
 let customerList = null;
 let customerForm = null;
+
+// Правила валидации для формы добавления клиента
+const customerValidationRules = {
+    'customer-username': [rules.required, rules.username],
+    'customer-password': [rules.required, rules.password],
+    'customer-password-confirm': [
+        rules.required,
+        rules.match('customer-password', 'Пароль')
+    ],
+    'customer-contact-name': [rules.required, rules.minLength(2)]
+};
 
 /**
  * Инициализация модуля
@@ -17,6 +30,7 @@ export function initCustomersModule() {
     
     if (customerForm) {
         customerForm.addEventListener('submit', addCustomer);
+        setupLiveValidation(customerForm, customerValidationRules);
     }
 }
 
@@ -26,6 +40,8 @@ export function initCustomersModule() {
  */
 export async function fetchCustomers(onUnauthorized) {
     if (!customerList) return;
+    
+    showContainerSpinner(customerList);
     
     try {
         const customers = await apiFetch('/users/', {}, onUnauthorized);
@@ -59,11 +75,8 @@ export async function fetchCustomers(onUnauthorized) {
 async function addCustomer(event) {
     event.preventDefault();
     
-    const password = document.getElementById('customer-password').value;
-    const passwordConfirm = document.getElementById('customer-password-confirm').value;
-
-    if (password !== passwordConfirm) {
-        alert('Пароли не совпадают!');
+    // Валидация формы
+    if (!validateForm(customerForm, customerValidationRules)) {
         return;
     }
 

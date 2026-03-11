@@ -3,12 +3,30 @@
  */
 
 import { apiFetch } from './api.js';
+import { validateForm, setupLiveValidation, rules } from '../validation.js';
+import { showContainerSpinner } from '../loading.js';
 
 // DOM элементы
 let flowerList = null;
 let flowerForm = null;
 let editFlowerModal = null;
 let editFlowerForm = null;
+
+// Правила валидации для формы добавления цветка
+const flowerValidationRules = {
+    'flower-name': [rules.required, rules.minLength(2)],
+    'flower-description': [rules.required],
+    'flower-price': [rules.required, rules.positiveNumber],
+    'flower-quantity': [rules.required, rules.positiveNumber, rules.integer]
+};
+
+// Правила валидации для формы редактирования
+const editFlowerValidationRules = {
+    'edit-flower-name': [rules.required, rules.minLength(2)],
+    'edit-flower-description': [rules.required],
+    'edit-flower-price': [rules.required, rules.positiveNumber],
+    'edit-flower-quantity': [rules.required, rules.positiveNumber, rules.integer]
+};
 
 /**
  * Инициализация модуля
@@ -21,10 +39,12 @@ export function initFlowersModule() {
     
     if (flowerForm) {
         flowerForm.addEventListener('submit', addFlower);
+        setupLiveValidation(flowerForm, flowerValidationRules);
     }
     
     if (editFlowerForm) {
         editFlowerForm.addEventListener('submit', updateFlower);
+        setupLiveValidation(editFlowerForm, editFlowerValidationRules);
     }
     
     // Закрытие модального окна
@@ -46,6 +66,8 @@ export function initFlowersModule() {
  */
 export async function fetchFlowers(onUnauthorized) {
     if (!flowerList) return;
+    
+    showContainerSpinner(flowerList);
     
     try {
         const flowers = await apiFetch('/flowers/', {}, onUnauthorized);
@@ -84,6 +106,11 @@ export async function fetchFlowers(onUnauthorized) {
  */
 async function addFlower(event) {
     event.preventDefault();
+    
+    // Валидация формы
+    if (!validateForm(flowerForm, flowerValidationRules)) {
+        return;
+    }
     
     const formData = new FormData();
     const imageFile = document.getElementById('flower-image').files[0];
@@ -192,6 +219,11 @@ export function closeEditModal() {
  */
 async function updateFlower(event) {
     event.preventDefault();
+    
+    // Валидация формы
+    if (!validateForm(editFlowerForm, editFlowerValidationRules)) {
+        return;
+    }
     
     const flowerId = document.getElementById('edit-flower-id').value;
     const updatedData = {

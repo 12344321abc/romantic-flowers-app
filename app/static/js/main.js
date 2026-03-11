@@ -9,7 +9,7 @@ import { updateNav, logout } from './navigation.js';
 import { initCatalogPage, handleAddToCart } from './catalog.js';
 import { initCartPage, handlePlaceOrder, updateCartQuantity, removeFromCart } from './cart.js';
 import { initAccountPage } from './account.js';
-import { handleLogin } from './auth.js';
+import { handleLogin, initLoginValidation } from './auth.js';
 
 /**
  * Инициализация страницы в зависимости от контекста
@@ -23,6 +23,7 @@ function initPage() {
     }
     
     if (getElement('login-form')) {
+        initLoginValidation();
         getElement('login-form').addEventListener('submit', handleLogin);
     }
     

@@ -1,6 +1,29 @@
 from pydantic import BaseModel
 from typing import Optional, List
+from enum import Enum
 import datetime
+
+
+# --- Enums ---
+class OrderStatus(str, Enum):
+    new = "new"
+    processing = "processing"
+    ready = "ready"
+    completed = "completed"
+    cancelled = "cancelled"
+
+
+# --- Pagination ---
+from typing import TypeVar, Generic
+
+T = TypeVar('T')
+
+class PaginatedResponse(BaseModel, Generic[T]):
+    items: List[T]
+    total: int
+    page: int
+    per_page: int
+    pages: int
 
 # --- Flower Schemas ---
 class FlowerBatchBase(BaseModel):
@@ -43,6 +66,12 @@ class UserCreate(UserBase):
 class UserUpdate(UserBase):
     password: Optional[str] = None
 
+class UserSelfUpdate(BaseModel):
+    """Schema for customers to update their own profile (limited fields)"""
+    contact_name: Optional[str] = None
+    address: Optional[str] = None
+    password: Optional[str] = None
+
 class User(UserBase):
     id: int
     role: str
@@ -82,11 +111,14 @@ class OrderBase(BaseModel):
 class OrderCreate(OrderBase):
     items: List[OrderItemCreate]
 
+class OrderStatusUpdate(BaseModel):
+    status: OrderStatus
+
 class Order(OrderBase):
     id: int
     customer_id: int
     created_at: datetime.datetime
-    status: str
+    status: OrderStatus
     items: List[OrderItem] = []
     
     class Config:

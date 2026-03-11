@@ -5,6 +5,7 @@
 import { getElement, getCart, saveCart, showToast } from './utils.js';
 import { apiFetch, getAuthToken } from './api.js';
 import { updateNav, logout } from './navigation.js';
+import { showContainerSpinner } from './loading.js';
 
 /**
  * Инициализация страницы каталога
@@ -14,6 +15,9 @@ export async function initCatalogPage() {
     if (!catalog) return;
     
     const authToken = getAuthToken();
+    
+    // Показываем спиннер пока загружается каталог
+    showContainerSpinner(catalog);
     
     try {
         const flowers = await apiFetch('/flowers/', {}, logout);
