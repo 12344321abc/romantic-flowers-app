@@ -82,6 +82,10 @@ export async function fetchFlowers(onUnauthorized) {
             const statusClass = flower.status === 'available' ? 'status-ready' : 'status-completed';
             
             flowerDiv.innerHTML = `
+                <div class="flower-quick-actions">
+                    <button class="edit-btn icon-btn" data-id="${flower.id}" title="Изменить">✏️</button>
+                    <button class="delete-btn icon-btn" data-id="${flower.id}" data-name="${flower.name}" title="Удалить">🗑</button>
+                </div>
                 <img src="${flower.image_url}" alt="${flower.name}">
                 <div class="flower-content">
                     <h3>${flower.name}</h3>
@@ -99,10 +103,6 @@ export async function fetchFlowers(onUnauthorized) {
                         <input type="number" class="admin-qty-input" placeholder="Кол-во" min="1" data-id="${flower.id}">
                         <button class="add-btn" data-id="${flower.id}" title="Добавить">+ Добавить</button>
                         <button class="sell-btn" data-id="${flower.id}" title="Списать">− Списать</button>
-                    </div>
-                    <div class="admin-btn-row">
-                        <button class="edit-btn" data-id="${flower.id}">✏️ Изменить</button>
-                        <button class="delete-btn" data-id="${flower.id}">🗑 Удалить</button>
                     </div>
                 </div>
             `;
@@ -152,10 +152,12 @@ async function addFlower(event) {
 /**
  * Удалить цветок
  * @param {string|number} flowerId
+ * @param {string} flowerName - Название цветка для подтверждения
  * @param {Function} [onUnauthorized]
  */
-export async function deleteFlower(flowerId, onUnauthorized) {
-    if (!confirm('Вы уверены?')) return;
+export async function deleteFlower(flowerId, flowerName, onUnauthorized) {
+    const confirmMessage = `Удалить "${flowerName}"?\n\nЭто действие нельзя отменить.`;
+    if (!confirm(confirmMessage)) return;
     
     try {
         await apiFetch(`/flowers/${flowerId}`, { method: 'DELETE' }, onUnauthorized);

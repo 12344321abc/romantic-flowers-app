@@ -192,7 +192,8 @@ async function handleFlowerListClick(e) {
     
     // Удаление
     if (target.classList.contains('delete-btn')) {
-        deleteFlower(target.dataset.id, logout);
+        const flowerName = target.dataset.name || 'этот цветок';
+        deleteFlower(target.dataset.id, flowerName, logout);
         return;
     }
     
