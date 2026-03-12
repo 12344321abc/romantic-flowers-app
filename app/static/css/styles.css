@@ -1243,14 +1243,15 @@ footer a:hover {
 .customer-item {
     background: var(--color-bg-card);
     border: 1px solid var(--color-border-light);
-    padding: var(--space-6);
+    padding: var(--space-4);
     border-radius: var(--radius-lg);
     margin-bottom: var(--space-4);
     box-shadow: var(--shadow-sm);
     transition: all var(--transition-fast);
     display: flex;
-    gap: var(--space-5);
+    gap: var(--space-4);
     align-items: flex-start;
+    position: relative;
 }
 
 .customer-item:hover {
@@ -1259,12 +1260,111 @@ footer a:hover {
 }
 
 .customer-item img {
-    width: 70px;
-    height: 70px;
+    width: 56px;
+    height: 56px;
     border-radius: var(--radius-lg);
     object-fit: cover;
-    border: 3px solid var(--color-accent-rose);
+    border: 2px solid var(--color-accent-rose);
     flex-shrink: 0;
+}
+
+.customer-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.customer-info h4 {
+    margin: 0 0 var(--space-1);
+    font-size: 1rem;
+    color: var(--color-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.customer-login {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-1);
+}
+
+.customer-address {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.customer-info details {
+    margin-top: var(--space-2);
+    font-size: 0.85rem;
+}
+
+.customer-info details summary {
+    cursor: pointer;
+    color: var(--color-primary);
+    font-weight: 500;
+}
+
+.customer-info details p {
+    margin: var(--space-2) 0 0;
+    color: var(--color-text-muted);
+}
+
+.customer-item .delete-customer-btn {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    font-size: 0.85rem;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--color-border-light);
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+}
+
+.customer-item:hover .delete-customer-btn {
+    opacity: 1;
+}
+
+.customer-item .delete-customer-btn:hover {
+    background: var(--color-error-soft);
+    border-color: var(--color-error);
+    transform: scale(1.1);
+}
+
+/* Mobile customer cards */
+@media (max-width: 480px) {
+    .customer-item {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+        padding: var(--space-4);
+    }
+    
+    .customer-item img {
+        margin: 0 auto var(--space-3);
+    }
+    
+    .customer-info h4,
+    .customer-address {
+        white-space: normal;
+        overflow: visible;
+    }
+    
+    .customer-item .delete-customer-btn {
+        opacity: 1;
+    }
 }
 
 /* =================================================================

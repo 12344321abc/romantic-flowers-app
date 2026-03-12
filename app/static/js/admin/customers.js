@@ -52,14 +52,16 @@ export async function fetchCustomers(onUnauthorized) {
             customerDiv.className = 'customer-item';
             customerDiv.innerHTML = `
                 <img src="${customer.photo_url || 'https://via.placeholder.com/100'}" alt="${customer.contact_name}">
-                <h4>${customer.contact_name}</h4>
-                <p>Логин: ${customer.username}</p>
-                <p>Адрес: ${customer.address || 'Не указан'}</p>
-                <details>
-                    <summary>Заметки админа</summary>
-                    <p>${customer.admin_notes || 'Нет заметок.'}</p>
-                </details>
-                <button class="delete-customer-btn" data-id="${customer.id}">Удалить</button>
+                <div class="customer-info">
+                    <h4>${customer.contact_name}</h4>
+                    <p class="customer-login">@${customer.username}</p>
+                    <p class="customer-address">${customer.address || 'Адрес не указан'}</p>
+                    <details>
+                        <summary>Заметки</summary>
+                        <p>${customer.admin_notes || 'Нет заметок.'}</p>
+                    </details>
+                </div>
+                <button class="delete-customer-btn icon-btn" data-id="${customer.id}" data-name="${customer.contact_name}" title="Удалить">🗑</button>
             `;
             customerList.appendChild(customerDiv);
         });

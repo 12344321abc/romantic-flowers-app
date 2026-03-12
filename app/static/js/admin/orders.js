@@ -132,8 +132,9 @@ export async function fetchOrders(onUnauthorized) {
             
             const itemsHtml = order.items.map(item => {
                 const details = flowerDetails[item.flower_batch_id];
-                const name = details ? details.name : `ID: ${item.flower_batch_id}`;
-                return `<li><b>${name}</b> - ${item.quantity} шт. по цене ${item.price_at_time_of_order.toFixed(2)} руб.</li>`;
+                const name = details ? details.name : `Цветок #${item.flower_batch_id}`;
+                const total = (item.quantity * item.price_at_time_of_order).toFixed(2);
+                return `<li><b>${name}</b> × ${item.quantity} — ${total} ₽</li>`;
             }).join('');
 
             const statusSelect = createStatusSelect(order.id, order.status);
