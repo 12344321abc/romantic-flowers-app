@@ -22,8 +22,6 @@ jobs:
           git reset --hard origin/main
           echo "Updating Python packages..."
           venv/bin/pip install -r requirements.txt
-          echo "Running migrations..."
-          venv/bin/python migrations/populate_customer_names.py
           echo "Restarting services..."
           sudo systemctl restart romantic
           sudo systemctl restart romantic-bot
