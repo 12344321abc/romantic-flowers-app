@@ -40,7 +40,8 @@ export async function initCatalogPage() {
         catalog.classList.remove('is-empty');
         availableFlowers.forEach(flower => {
             const itemInCart = cart[flower.id];
-            const displayQuantity = itemInCart ? flower.quantity - itemInCart.quantity : flower.quantity;
+            const inCartQty = itemInCart ? itemInCart.quantity : 0;
+            const displayQuantity = flower.quantity - inCartQty;
 
             const flowerDiv = document.createElement('div');
             flowerDiv.className = 'flower-item';
@@ -61,6 +62,13 @@ export async function initCatalogPage() {
                     <button class="add-to-cart-btn" ${displayQuantity <= 0 ? 'disabled' : ''}>Добавить в корзину</button>
                 `;
             }
+            
+            // Формируем блок информации о наличии с учётом корзины
+            const stockHtml = inCartQty > 0
+                ? `<span class="flower-in-cart">🛒 В корзине: ${inCartQty} шт</span>
+                   <span class="flower-stock">Ещё доступно: ${displayQuantity} шт.</span>`
+                : `<span class="flower-stock">В наличии: ${displayQuantity} шт.</span>`;
+            
             flowerDiv.innerHTML = `
                 <img src="${flower.image_url}" alt="${flower.name}">
                 <div class="flower-content">
@@ -68,7 +76,9 @@ export async function initCatalogPage() {
                     <p class="flower-description">${flower.description || ''}</p>
                     <div class="flower-meta">
                         <span class="flower-price">${flower.price} ₽</span>
-                        <span class="flower-stock">В наличии: ${displayQuantity} шт.</span>
+                        <div class="flower-stock-info">
+                            ${stockHtml}
+                        </div>
                     </div>
                 </div>
                 <div class="actions-container">
@@ -107,34 +117,44 @@ export function handleAddToCart(flowerItem) {
     showToast(`"${name}" (${quantity} шт) добавлено.`, '/static/cart.html', 'В корзину');
     
     // Обновляем только затронутую карточку без перезагрузки всего каталога
-    updateFlowerCardStock(flowerItem, maxQty - newQty);
+    updateFlowerCardStock(flowerItem, newQty, maxQty - newQty);
 }
 
 /**
  * Обновить отображение остатка на карточке цветка
  * @param {HTMLElement} flowerItem - Элемент карточки товара
- * @param {number} newDisplayQuantity - Новое количество для отображения
+ * @param {number} inCartQty - Количество в корзине
+ * @param {number} availableQty - Ещё доступное количество
  */
-function updateFlowerCardStock(flowerItem, newDisplayQuantity) {
-    const stockElement = flowerItem.querySelector('.flower-stock');
+function updateFlowerCardStock(flowerItem, inCartQty, availableQty) {
+    const stockInfoContainer = flowerItem.querySelector('.flower-stock-info');
     const quantitySelector = flowerItem.querySelector('.quantity-selector');
     const addButton = flowerItem.querySelector('.add-to-cart-btn');
     const quantityDisplay = quantitySelector.querySelector('.quantity-display');
     
     // Обновляем data-display-max для корректной работы кнопок +/-
-    quantitySelector.dataset.displayMax = newDisplayQuantity;
+    quantitySelector.dataset.displayMax = availableQty;
     
-    // Обновляем текст остатка
-    stockElement.textContent = `В наличии: ${newDisplayQuantity} шт.`;
+    // Обновляем блок информации о наличии
+    if (inCartQty > 0) {
+        stockInfoContainer.innerHTML = `
+            <span class="flower-in-cart">🛒 В корзине: ${inCartQty} шт</span>
+            <span class="flower-stock">Ещё доступно: ${availableQty} шт.</span>
+        `;
+    } else {
+        stockInfoContainer.innerHTML = `
+            <span class="flower-stock">В наличии: ${availableQty} шт.</span>
+        `;
+    }
     
     // Сбрасываем счётчик на 1
     quantityDisplay.textContent = '1';
     
-    if (newDisplayQuantity <= 0) {
+    if (availableQty <= 0) {
         // Скрываем карточку если товара не осталось
         flowerItem.classList.add('hidden');
     } else {
-        // Активируем/деактивируем кнопку если нужно
+        // Активируем кнопку
         addButton.disabled = false;
     }
 }
