@@ -163,9 +163,14 @@ def update_order_status(db: Session, order_id: int, new_status: schemas.OrderSta
 
 
 def create_order(db: Session, order: schemas.OrderCreate, customer_id: int):
+    # Get customer to denormalize their name
+    customer = get_user(db, customer_id)
+    customer_name = customer.contact_name if customer else None
+    
     db_order = models.Order(
         customer_id=customer_id,
-        customer_comment=order.customer_comment
+        customer_comment=order.customer_comment,
+        customer_name=customer_name  # Denormalized: preserves name at time of order
     )
     db.add(db_order)
     
@@ -312,3 +317,110 @@ def create_or_update_subscriber(db: Session, chat_id: int, is_active: bool = Tru
 
 def get_active_subscribers(db: Session):
     return db.query(models.TelegramSubscriber).filter(models.TelegramSubscriber.is_active == True).all()
+
+
+# --- Refresh Token CRUD ---
+
+def create_refresh_token(
+    db: Session,
+    token: str,
+    user_id: int,
+    expires_at: datetime,
+    device_info: Optional[str] = None
+) -> models.RefreshToken:
+    """Create a new refresh token in the database."""
+    db_token = models.RefreshToken(
+        token=token,
+        user_id=user_id,
+        expires_at=expires_at,
+        device_info=device_info
+    )
+    db.add(db_token)
+    db.commit()
+    db.refresh(db_token)
+    return db_token
+
+
+def get_refresh_token(db: Session, token: str) -> Optional[models.RefreshToken]:
+    """Get refresh token by token string."""
+    return db.query(models.RefreshToken).filter(
+        models.RefreshToken.token == token
+    ).first()
+
+
+def get_valid_refresh_token(db: Session, token: str) -> Optional[models.RefreshToken]:
+    """Get refresh token if it exists, is not revoked, and not expired."""
+    return db.query(models.RefreshToken).filter(
+        models.RefreshToken.token == token,
+        models.RefreshToken.is_revoked == False,
+        models.RefreshToken.expires_at > datetime.utcnow()
+    ).first()
+
+
+def revoke_refresh_token(db: Session, token: str) -> bool:
+    """Revoke a specific refresh token. Returns True if found and revoked."""
+    db_token = get_refresh_token(db, token)
+    if db_token:
+        db_token.is_revoked = True
+        db.commit()
+        return True
+    return False
+
+
+def revoke_all_user_tokens(db: Session, user_id: int) -> int:
+    """Revoke all refresh tokens for a user. Returns number of tokens revoked."""
+    result = db.query(models.RefreshToken).filter(
+        models.RefreshToken.user_id == user_id,
+        models.RefreshToken.is_revoked == False
+    ).update({"is_revoked": True})
+    db.commit()
+    return result
+
+
+def get_user_refresh_tokens(db: Session, user_id: int):
+    """Get all active (not revoked, not expired) refresh tokens for a user."""
+    return db.query(models.RefreshToken).filter(
+        models.RefreshToken.user_id == user_id,
+        models.RefreshToken.is_revoked == False,
+        models.RefreshToken.expires_at > datetime.utcnow()
+    ).all()
+
+
+def cleanup_expired_tokens(db: Session) -> int:
+    """Delete all expired or revoked tokens. Returns number deleted."""
+    result = db.query(models.RefreshToken).filter(
+        (models.RefreshToken.expires_at < datetime.utcnow()) |
+        (models.RefreshToken.is_revoked == True)
+    ).delete()
+    db.commit()
+    return result
+
+
+def rotate_refresh_token(
+    db: Session,
+    old_token: str,
+    new_token: str,
+    expires_at: datetime
+) -> Optional[models.RefreshToken]:
+    """
+    Rotate refresh token: revoke old token and create new one.
+    Returns new token if successful, None if old token not found/invalid.
+    """
+    old_db_token = get_valid_refresh_token(db, old_token)
+    if not old_db_token:
+        return None
+    
+    # Revoke old token
+    old_db_token.is_revoked = True
+    
+    # Create new token with same user and device info
+    new_db_token = models.RefreshToken(
+        token=new_token,
+        user_id=old_db_token.user_id,
+        expires_at=expires_at,
+        device_info=old_db_token.device_info
+    )
+    db.add(new_db_token)
+    db.commit()
+    db.refresh(new_db_token)
+    return new_db_token

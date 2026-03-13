@@ -84,8 +84,19 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
+class TokenWithRefresh(BaseModel):
+    """Response with both access and refresh tokens"""
+    access_token: str
+    token_type: str
+    expires_in: int  # Access token expiration in seconds
+    refresh_token: str
+
 class TokenData(BaseModel):
     username: Optional[str] = None
+
+class RefreshTokenRequest(BaseModel):
+    """Request to refresh access token"""
+    refresh_token: str
 
 class SellRequest(BaseModel):
     quantity: int
@@ -120,6 +131,7 @@ class Order(OrderBase):
     customer_id: int
     created_at: datetime.datetime
     status: OrderStatus
+    customer_name: Optional[str] = None  # Denormalized: preserves name at time of order
     items: List[OrderItem] = []
     
     class Config:

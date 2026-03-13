@@ -161,6 +161,33 @@
         </div>
     </div>
 
+    <div id="edit-customer-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>✏️ Редактировать клиента</h2>
+            <form id="edit-customer-form">
+                <input type="hidden" id="edit-customer-id">
+                <div class="form-group">
+                    <label for="edit-customer-contact-name">Контактное лицо / Компания</label>
+                    <input type="text" id="edit-customer-contact-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-customer-address">Адрес доставки</label>
+                    <textarea id="edit-customer-address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-customer-admin-notes">Заметки администратора</label>
+                    <textarea id="edit-customer-admin-notes"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-customer-password">Новый пароль (оставьте пустым, если не меняете)</label>
+                    <input type="password" id="edit-customer-password" placeholder="Минимум 3 символа">
+                </div>
+                <button type="submit">💾 Сохранить изменения</button>
+            </form>
+        </div>
+    </div>
+
     <script type="module" src="/static/js/admin/main.js"></script>
 </body>
 </html>

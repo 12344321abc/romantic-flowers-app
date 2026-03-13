@@ -2,9 +2,9 @@
  * Главный модуль админ-панели
  */
 
-import { getAuthToken, removeAuthToken, apiFetch, login } from './api.js';
+import { getAuthToken, apiFetch, login, logout as apiLogout } from './api.js';
 import { initFlowersModule, fetchFlowers, deleteFlower, sellFlowers, addFlowerQuantity, openEditModal, getFlowerById } from './flowers.js';
-import { initCustomersModule, fetchCustomers, deleteCustomer } from './customers.js';
+import { initCustomersModule, fetchCustomers, deleteCustomer, openEditCustomerModal, getCustomerById } from './customers.js';
 import { initOrdersModule, fetchOrders } from './orders.js';
 import { sendBroadcast } from './broadcast.js';
 
@@ -77,11 +77,7 @@ function setupEventListeners() {
     
     // Действия со списком клиентов
     if (customerList) {
-        customerList.addEventListener('click', (e) => {
-            if (e.target.classList.contains('delete-customer-btn')) {
-                deleteCustomer(e.target.dataset.id, logout);
-            }
-        });
+        customerList.addEventListener('click', handleCustomerListClick);
     }
     
     // Кнопка рассылки
@@ -178,8 +174,8 @@ async function handleLogin(e) {
 /**
  * Выход из системы
  */
-function logout() {
-    removeAuthToken();
+async function logout() {
+    await apiLogout();  // Revokes refresh token on server
     updateLoginView();
 }
 
@@ -227,6 +223,32 @@ async function handleFlowerListClick(e) {
         }
         
         if (quantityInput) quantityInput.value = '';
+    }
+}
+
+/**
+ * Обработчик кликов по списку клиентов
+ * @param {Event} e
+ */
+async function handleCustomerListClick(e) {
+    const target = e.target;
+    
+    // Удаление
+    if (target.classList.contains('delete-customer-btn')) {
+        const customerName = target.dataset.name || 'этого клиента';
+        deleteCustomer(target.dataset.id, customerName, logout);
+        return;
+    }
+    
+    // Редактирование
+    if (target.classList.contains('edit-customer-btn')) {
+        try {
+            const customer = await getCustomerById(target.dataset.id);
+            openEditCustomerModal(customer);
+        } catch (error) {
+            console.error('Failed to fetch customer details:', error);
+        }
+        return;
     }
 }
 

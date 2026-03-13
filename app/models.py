@@ -44,6 +44,7 @@ class Order(Base):
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     status = Column(String, default="new") # e.g., 'new', 'completed', 'cancelled'
     customer_comment = Column(String, nullable=True)
+    customer_name = Column(String, nullable=True)  # Denormalized: preserves name at time of order
     
     customer = relationship("User", back_populates="orders")
     items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
@@ -70,3 +71,21 @@ class TelegramSubscriber(Base):
 
     chat_id = Column(Integer, primary_key=True, index=True)
     is_active = Column(Boolean, default=True)
+
+
+class RefreshToken(Base):
+    """
+    Stores refresh tokens for long-term sessions.
+    Each token allows getting a new access token without re-login.
+    """
+    __tablename__ = "refresh_tokens"
+
+    id = Column(Integer, primary_key=True, index=True)
+    token = Column(String, unique=True, index=True, nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    device_info = Column(String, nullable=True)  # Optional: user agent or device name
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    expires_at = Column(DateTime, nullable=False)
+    is_revoked = Column(Boolean, default=False)
+
+    user = relationship("User")

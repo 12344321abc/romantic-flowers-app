@@ -3,7 +3,7 @@
  */
 
 import { getElement, getCart } from './utils.js';
-import { getAuthToken, removeAuthToken } from './api.js';
+import { getAuthToken, logout as apiLogout } from './api.js';
 
 /**
  * Обновить навигационное меню
@@ -28,9 +28,9 @@ export function updateNav() {
 
     const logoutBtn = getElement('logout-btn');
     if (logoutBtn) {
-        logoutBtn.addEventListener('click', e => {
+        logoutBtn.addEventListener('click', async e => {
             e.preventDefault();
-            logout();
+            await logout();
         });
     }
 }
@@ -39,8 +39,8 @@ export function updateNav() {
  * Выход из системы
  * @param {Function} [initPageCallback] - Callback для переинициализации страницы
  */
-export function logout(initPageCallback = null) {
-    removeAuthToken();
+export async function logout(initPageCallback = null) {
+    await apiLogout();  // Revokes refresh token on server
     if (window.location.pathname.includes('cart.html')) {
         window.location.href = '/static/login.html';
     } else if (initPageCallback) {

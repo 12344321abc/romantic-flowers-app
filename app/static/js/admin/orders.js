@@ -133,9 +133,14 @@ export async function fetchOrders(onUnauthorized) {
 
             const statusSelect = createStatusSelect(order.id, order.status);
 
+            // Use denormalized customer_name, fallback to customerNames map, then to ID
+            const customerDisplay = order.customer_name
+                || customerNames[order.customer_id]
+                || `Удалённый клиент (ID: ${order.customer_id})`;
+
             orderDiv.innerHTML = `
                 <h4>Заказ #${order.id} от ${new Date(order.created_at).toLocaleString()}</h4>
-                <p><strong>Клиент:</strong> ${customerNames[order.customer_id] || `ID: ${order.customer_id}`}</p>
+                <p><strong>Клиент:</strong> ${customerDisplay}</p>
                 <p><strong>Статус:</strong> ${statusSelect}</p>
                 <p><strong>Комментарий:</strong> ${order.customer_comment || 'Нет'}</p>
                 <p><strong>Состав:</strong></p>
