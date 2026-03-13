@@ -184,7 +184,8 @@ def create_order(db: Session, order: schemas.OrderCreate, customer_id: int):
             order=db_order,
             flower_batch_id=item.flower_batch_id,
             quantity=item.quantity,
-            price_at_time_of_order=flower_batch.price
+            price_at_time_of_order=flower_batch.price,
+            flower_name=flower_batch.name  # Denormalized: preserves name at time of order
         )
         flower_batch.quantity -= item.quantity
         if flower_batch.quantity == 0:

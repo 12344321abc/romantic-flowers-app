@@ -54,9 +54,10 @@ class OrderItem(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     order_id = Column(Integer, ForeignKey("orders.id"))
-    flower_batch_id = Column(Integer, ForeignKey("flower_batches.id"))
+    flower_batch_id = Column(Integer, ForeignKey("flower_batches.id"), nullable=True)
     quantity = Column(Integer)
     price_at_time_of_order = Column(Float)
+    flower_name = Column(String, nullable=True)  # Denormalized: preserves name at time of order
 
     order = relationship("Order", back_populates="items")
     flower_batch = relationship("FlowerBatch")

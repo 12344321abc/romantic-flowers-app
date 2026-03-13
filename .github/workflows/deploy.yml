@@ -22,6 +22,8 @@ jobs:
           git reset --hard origin/main
           echo "Updating Python packages..."
           venv/bin/pip install -r requirements.txt
+          echo "Running database migration: populate_flower_names..."
+          venv/bin/python -m migrations.populate_flower_names
           echo "Restarting services..."
           sudo systemctl restart romantic
           sudo systemctl restart romantic-bot

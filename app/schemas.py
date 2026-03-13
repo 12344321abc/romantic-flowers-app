@@ -101,6 +101,7 @@ class OrderItemCreate(OrderItemBase):
 class OrderItem(OrderItemBase):
     id: int
     price_at_time_of_order: float
+    flower_name: Optional[str] = None  # Denormalized: preserves name at time of order
     
     class Config:
         from_attributes = True

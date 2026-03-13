@@ -97,10 +97,10 @@ export async function fetchOrders(onUnauthorized) {
     showContainerSpinner(orderList);
     
     try {
-        const [orders, users, flowers] = await Promise.all([
+        // No longer need to fetch flowers - names are stored in order_items
+        const [orders, users] = await Promise.all([
             apiFetch('/orders/', {}, onUnauthorized),
-            apiFetch('/users/', {}, onUnauthorized),
-            apiFetch('/flowers/', {}, onUnauthorized)
+            apiFetch('/users/', {}, onUnauthorized)
         ]);
         
         orderList.innerHTML = '';
@@ -116,15 +116,6 @@ export async function fetchOrders(onUnauthorized) {
             return acc;
         }, {});
 
-        // Создаём карту деталей цветов (используем строковые ключи для надёжности)
-        const flowerDetails = flowers.reduce((acc, flower) => {
-            acc[String(flower.id)] = { name: flower.name, description: flower.description };
-            return acc;
-        }, {});
-        
-        // DEBUG: Log flower IDs for troubleshooting
-        console.log('[Orders] Available flower IDs:', Object.keys(flowerDetails));
-
         // Сортируем заказы по дате (новые сверху)
         orders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
@@ -134,12 +125,8 @@ export async function fetchOrders(onUnauthorized) {
             orderDiv.dataset.status = order.status;
             
             const itemsHtml = order.items.map(item => {
-                const details = flowerDetails[String(item.flower_batch_id)];
-                // DEBUG: Log when flower not found
-                if (!details) {
-                    console.warn(`[Orders] Flower ID ${item.flower_batch_id} not found in flowers list. Order #${order.id}`);
-                }
-                const name = details ? details.name : `Удалённый цветок (ID: ${item.flower_batch_id})`;
+                // Use denormalized flower_name from order_item
+                const name = item.flower_name || `Удалённый цветок (ID: ${item.flower_batch_id})`;
                 const total = (item.quantity * item.price_at_time_of_order).toFixed(2);
                 return `<li><b>${name}</b> × ${item.quantity} — ${total} ₽</li>`;
             }).join('');
