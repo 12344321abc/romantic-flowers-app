@@ -794,7 +794,7 @@ footer a:hover {
 /* Matches the dimensions and style of .add-to-cart-btn */
 .cart-counter {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     width: 100%;
     background: linear-gradient(135deg, #4caf7d 0%, #2e7d55 100%);
     border-radius: var(--radius-md);
@@ -813,7 +813,7 @@ footer a:hover {
 .cart-counter-btn {
     width: 44px;
     padding: var(--space-3) 0;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
     text-align: center;
     background: transparent;
@@ -823,6 +823,9 @@ footer a:hover {
     box-shadow: none;
     cursor: pointer;
     transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cart-counter-btn:hover:not(:disabled) {
@@ -853,6 +856,9 @@ footer a:hover {
     text-decoration: none;
     padding: var(--space-3) var(--space-1);
     transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cart-counter-value:hover {
