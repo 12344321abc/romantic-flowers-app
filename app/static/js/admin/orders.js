@@ -121,6 +121,9 @@ export async function fetchOrders(onUnauthorized) {
             acc[String(flower.id)] = { name: flower.name, description: flower.description };
             return acc;
         }, {});
+        
+        // DEBUG: Log flower IDs for troubleshooting
+        console.log('[Orders] Available flower IDs:', Object.keys(flowerDetails));
 
         // Сортируем заказы по дате (новые сверху)
         orders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
@@ -132,7 +135,11 @@ export async function fetchOrders(onUnauthorized) {
             
             const itemsHtml = order.items.map(item => {
                 const details = flowerDetails[String(item.flower_batch_id)];
-                const name = details ? details.name : `Неизвестный цветок (ID: ${item.flower_batch_id})`;
+                // DEBUG: Log when flower not found
+                if (!details) {
+                    console.warn(`[Orders] Flower ID ${item.flower_batch_id} not found in flowers list. Order #${order.id}`);
+                }
+                const name = details ? details.name : `Удалённый цветок (ID: ${item.flower_batch_id})`;
                 const total = (item.quantity * item.price_at_time_of_order).toFixed(2);
                 return `<li><b>${name}</b> × ${item.quantity} — ${total} ₽</li>`;
             }).join('');
