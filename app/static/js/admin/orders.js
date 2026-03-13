@@ -116,9 +116,9 @@ export async function fetchOrders(onUnauthorized) {
             return acc;
         }, {});
 
-        // Создаём карту деталей цветов
+        // Создаём карту деталей цветов (используем строковые ключи для надёжности)
         const flowerDetails = flowers.reduce((acc, flower) => {
-            acc[flower.id] = { name: flower.name, description: flower.description };
+            acc[String(flower.id)] = { name: flower.name, description: flower.description };
             return acc;
         }, {});
 
@@ -131,8 +131,8 @@ export async function fetchOrders(onUnauthorized) {
             orderDiv.dataset.status = order.status;
             
             const itemsHtml = order.items.map(item => {
-                const details = flowerDetails[item.flower_batch_id];
-                const name = details ? details.name : `Цветок #${item.flower_batch_id}`;
+                const details = flowerDetails[String(item.flower_batch_id)];
+                const name = details ? details.name : `Неизвестный цветок (ID: ${item.flower_batch_id})`;
                 const total = (item.quantity * item.price_at_time_of_order).toFixed(2);
                 return `<li><b>${name}</b> × ${item.quantity} — ${total} ₽</li>`;
             }).join('');
