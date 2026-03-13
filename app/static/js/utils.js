@@ -30,6 +30,13 @@ export function saveCart(cart, updateNavCallback) {
 }
 
 /**
+ * Очистить корзину
+ */
+export function clearCart() {
+    localStorage.removeItem('cart');
+}
+
+/**
  * Показать toast-уведомление
  * @param {string} message - Текст сообщения
  * @param {string} [linkUrl] - URL ссылки (опционально)

@@ -2,8 +2,19 @@
  * Модуль навигации и управления состоянием авторизации
  */
 
-import { getElement, getCart } from './utils.js';
+import { getElement, getCart, clearCart } from './utils.js';
 import { getAuthToken, logout as apiLogout } from './api.js';
+
+// Callback для переинициализации страницы после logout
+let pageInitCallback = null;
+
+/**
+ * Установить callback для переинициализации страницы
+ * @param {Function} callback - Функция инициализации страницы
+ */
+export function setPageInitCallback(callback) {
+    pageInitCallback = callback;
+}
 
 /**
  * Обновить навигационное меню
@@ -37,14 +48,19 @@ export function updateNav() {
 
 /**
  * Выход из системы
- * @param {Function} [initPageCallback] - Callback для переинициализации страницы
+ * Очищает токены, корзину и переинициализирует страницу
  */
-export async function logout(initPageCallback = null) {
+export async function logout() {
     await apiLogout();  // Revokes refresh token on server
-    if (window.location.pathname.includes('cart.html')) {
+    clearCart();  // Clear the cart on logout
+    
+    if (window.location.pathname.includes('cart.html') ||
+        window.location.pathname.includes('account.html')) {
+        // Redirect to login for protected pages
         window.location.href = '/static/login.html';
-    } else if (initPageCallback) {
-        initPageCallback();
+    } else if (pageInitCallback) {
+        // Re-initialize the current page (e.g., catalog)
+        pageInitCallback();
     } else {
         updateNav();
     }

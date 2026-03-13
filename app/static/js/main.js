@@ -3,9 +3,8 @@
  * Инициализирует все страницы и обработчики событий
  */
 
-import { getElement, getCart, saveCart, showToast } from './utils.js';
-import { getAuthToken } from './api.js';
-import { updateNav, logout } from './navigation.js';
+import { getElement, showToast } from './utils.js';
+import { updateNav, setPageInitCallback } from './navigation.js';
 import { initCatalogPage, handleAddToCart } from './catalog.js';
 import { initCartPage, handlePlaceOrder, updateCartQuantity, removeFromCart } from './cart.js';
 import { initAccountPage } from './account.js';
@@ -39,6 +38,9 @@ function initPage() {
         initAccountPage();
     }
 }
+
+// Регистрируем callback для переинициализации страницы при logout
+setPageInitCallback(initPage);
 
 /**
  * Глобальные обработчики событий клика

@@ -1313,16 +1313,29 @@ footer a:hover {
     color: var(--color-text-muted);
 }
 
-.customer-item .delete-customer-btn {
+/* Customer quick action buttons (edit/delete) */
+.customer-quick-actions {
     position: absolute;
     top: var(--space-2);
     right: var(--space-2);
+    display: flex;
+    gap: var(--space-1);
+    z-index: 10;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.customer-item:hover .customer-quick-actions {
+    opacity: 1;
+}
+
+.customer-quick-actions .icon-btn {
     width: 28px;
     height: 28px;
     padding: 0;
     font-size: 0.85rem;
     border-radius: var(--radius-md);
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     border: 1px solid var(--color-border-light);
     box-shadow: var(--shadow-sm);
     cursor: pointer;
@@ -1330,17 +1343,21 @@ footer a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
 }
 
-.customer-item:hover .delete-customer-btn {
-    opacity: 1;
+.customer-quick-actions .icon-btn:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-md);
 }
 
-.customer-item .delete-customer-btn:hover {
+.customer-quick-actions .edit-customer-btn:hover {
+    background: var(--color-info-soft);
+    border-color: var(--color-info);
+}
+
+.customer-quick-actions .delete-customer-btn:hover {
     background: var(--color-error-soft);
     border-color: var(--color-error);
-    transform: scale(1.1);
 }
 
 /* Mobile customer cards */
@@ -1362,7 +1379,7 @@ footer a:hover {
         overflow: visible;
     }
     
-    .customer-item .delete-customer-btn {
+    .customer-quick-actions {
         opacity: 1;
     }
 }
