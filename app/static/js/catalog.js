@@ -95,14 +95,46 @@ export function handleAddToCart(flowerItem) {
     const cart = getCart();
     const existingQty = cart[id] ? cart[id].quantity : 0;
     const newQty = existingQty + quantity;
+    const maxQty = parseInt(maxQuantity);
 
-    if (newQty > parseInt(maxQuantity)) {
-        alert(`Нельзя добавить больше, чем есть в наличии (${maxQuantity} шт.).`);
+    if (newQty > maxQty) {
+        showToast(`Нельзя добавить больше, чем есть в наличии (${maxQty} шт.)`);
         return;
     }
     
-    cart[id] = { name, price: parseFloat(price), quantity: newQty, maxQuantity: parseInt(maxQuantity) };
+    cart[id] = { name, price: parseFloat(price), quantity: newQty, maxQuantity: maxQty };
     saveCart(cart, updateNav);
     showToast(`"${name}" (${quantity} шт) добавлено.`, '/static/cart.html', 'В корзину');
-    initCatalogPage(); // Re-render the catalog to update stock display
+    
+    // Обновляем только затронутую карточку без перезагрузки всего каталога
+    updateFlowerCardStock(flowerItem, maxQty - newQty);
+}
+
+/**
+ * Обновить отображение остатка на карточке цветка
+ * @param {HTMLElement} flowerItem - Элемент карточки товара
+ * @param {number} newDisplayQuantity - Новое количество для отображения
+ */
+function updateFlowerCardStock(flowerItem, newDisplayQuantity) {
+    const stockElement = flowerItem.querySelector('.flower-stock');
+    const quantitySelector = flowerItem.querySelector('.quantity-selector');
+    const addButton = flowerItem.querySelector('.add-to-cart-btn');
+    const quantityDisplay = quantitySelector.querySelector('.quantity-display');
+    
+    // Обновляем data-display-max для корректной работы кнопок +/-
+    quantitySelector.dataset.displayMax = newDisplayQuantity;
+    
+    // Обновляем текст остатка
+    stockElement.textContent = `В наличии: ${newDisplayQuantity} шт.`;
+    
+    // Сбрасываем счётчик на 1
+    quantityDisplay.textContent = '1';
+    
+    if (newDisplayQuantity <= 0) {
+        // Скрываем карточку если товара не осталось
+        flowerItem.classList.add('hidden');
+    } else {
+        // Активируем/деактивируем кнопку если нужно
+        addButton.disabled = false;
+    }
 }
