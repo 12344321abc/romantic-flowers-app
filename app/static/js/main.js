@@ -5,7 +5,7 @@
 
 import { getElement, showToast } from './utils.js';
 import { updateNav, setPageInitCallback } from './navigation.js';
-import { initCatalogPage, handleAddToCart } from './catalog.js';
+import { initCatalogPage, handleAddToCart, handleAddMoreClick } from './catalog.js';
 import { initCartPage, handlePlaceOrder, updateCartQuantity, removeFromCart } from './cart.js';
 import { initAccountPage } from './account.js';
 import { handleLogin, initLoginValidation } from './auth.js';
@@ -52,6 +52,11 @@ document.body.addEventListener('click', e => {
         if (flowerItem) {
             handleAddToCart(flowerItem);
         }
+    }
+    
+    // Кнопка "Ещё" - показать панель добавления
+    if (e.target.matches('.add-more-btn')) {
+        handleAddMoreClick(e.target);
     }
     
     // Удаление из корзины

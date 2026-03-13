@@ -53,22 +53,8 @@ export async function initCatalogPage() {
 
             let actionHtml = `<p class="login-prompt"><a href="/static/login.html">Войдите</a>, чтобы добавить в корзину</p>`;
             if (authToken) {
-                actionHtml = `
-                    <div class="quantity-selector" data-id="${flower.id}" data-name="${flower.name}" data-price="${flower.price}" data-max-quantity="${flower.quantity}" data-display-max="${displayQuantity}">
-                        <button class="change-qty-btn" data-change="-1">−</button>
-                        <span class="quantity-display">1</span>
-                        <button class="change-qty-btn" data-change="1">+</button>
-                    </div>
-                    <button class="add-to-cart-btn" ${displayQuantity <= 0 ? 'disabled' : ''}>Добавить в корзину</button>
-                `;
+                actionHtml = renderCartActions(flower.id, flower.name, flower.price, flower.quantity, inCartQty, displayQuantity);
             }
-            
-            // Формируем блок информации о наличии с учётом корзины
-            const stockHtml = inCartQty > 0
-                ? `<span class="flower-in-cart">🛒 В корзине: ${inCartQty} шт</span>
-                   <span class="flower-stock">Ещё доступно: ${displayQuantity} шт.</span>`
-                : `<span class="flower-stock">В наличии: ${displayQuantity} шт.</span>`;
-            
             flowerDiv.innerHTML = `
                 <img src="${flower.image_url}" alt="${flower.name}">
                 <div class="flower-content">
@@ -76,9 +62,7 @@ export async function initCatalogPage() {
                     <p class="flower-description">${flower.description || ''}</p>
                     <div class="flower-meta">
                         <span class="flower-price">${flower.price} ₽</span>
-                        <div class="flower-stock-info">
-                            ${stockHtml}
-                        </div>
+                        <span class="flower-stock">В наличии: ${displayQuantity} шт.</span>
                     </div>
                 </div>
                 <div class="actions-container">
@@ -89,6 +73,45 @@ export async function initCatalogPage() {
         });
     } catch (error) {
         catalog.innerHTML = `<p style="color:red;">${error.message}</p>`;
+    }
+}
+
+/**
+ * Генерирует HTML для action-секции карточки цветка
+ * @param {number} id - ID цветка
+ * @param {string} name - Название
+ * @param {number} price - Цена
+ * @param {number} maxQuantity - Максимальное количество
+ * @param {number} inCartQty - Количество в корзине
+ * @param {number} displayQuantity - Доступное количество
+ */
+function renderCartActions(id, name, price, maxQuantity, inCartQty, displayQuantity) {
+    if (inCartQty > 0) {
+        // Товар уже в корзине - показываем статус и кнопку "Ещё"
+        return `
+            <div class="cart-status-row">
+                <a href="/static/cart.html" class="in-cart-badge">🛒 В корзине: ${inCartQty} шт.</a>
+                ${displayQuantity > 0 ? `<button class="add-more-btn" data-id="${id}" data-name="${name}" data-price="${price}" data-max-quantity="${maxQuantity}">+ Ещё</button>` : ''}
+            </div>
+            <div class="add-more-panel hidden" data-id="${id}">
+                <div class="quantity-selector" data-id="${id}" data-name="${name}" data-price="${price}" data-max-quantity="${maxQuantity}" data-display-max="${displayQuantity}">
+                    <button class="change-qty-btn" data-change="-1">−</button>
+                    <span class="quantity-display">1</span>
+                    <button class="change-qty-btn" data-change="1">+</button>
+                </div>
+                <button class="add-to-cart-btn">Добавить</button>
+            </div>
+        `;
+    } else {
+        // Товар ещё не в корзине - стандартный вид
+        return `
+            <div class="quantity-selector" data-id="${id}" data-name="${name}" data-price="${price}" data-max-quantity="${maxQuantity}" data-display-max="${displayQuantity}">
+                <button class="change-qty-btn" data-change="-1">−</button>
+                <span class="quantity-display">1</span>
+                <button class="change-qty-btn" data-change="1">+</button>
+            </div>
+            <button class="add-to-cart-btn" ${displayQuantity <= 0 ? 'disabled' : ''}>В корзину</button>
+        `;
     }
 }
 
@@ -116,45 +139,38 @@ export function handleAddToCart(flowerItem) {
     saveCart(cart, updateNav);
     showToast(`"${name}" (${quantity} шт) добавлено.`, '/static/cart.html', 'В корзину');
     
-    // Обновляем только затронутую карточку без перезагрузки всего каталога
-    updateFlowerCardStock(flowerItem, newQty, maxQty - newQty);
+    // Обновляем карточку: остаток и UI
+    const displayQty = maxQty - newQty;
+    updateFlowerCardUI(flowerItem, id, name, parseFloat(price), maxQty, newQty, displayQty);
 }
 
 /**
- * Обновить отображение остатка на карточке цветка
- * @param {HTMLElement} flowerItem - Элемент карточки товара
- * @param {number} inCartQty - Количество в корзине
- * @param {number} availableQty - Ещё доступное количество
+ * Обновить UI карточки цветка после добавления в корзину
  */
-function updateFlowerCardStock(flowerItem, inCartQty, availableQty) {
-    const stockInfoContainer = flowerItem.querySelector('.flower-stock-info');
-    const quantitySelector = flowerItem.querySelector('.quantity-selector');
-    const addButton = flowerItem.querySelector('.add-to-cart-btn');
-    const quantityDisplay = quantitySelector.querySelector('.quantity-display');
+function updateFlowerCardUI(flowerItem, id, name, price, maxQuantity, inCartQty, displayQuantity) {
+    const stockElement = flowerItem.querySelector('.flower-stock');
+    const actionsContainer = flowerItem.querySelector('.actions-container');
     
-    // Обновляем data-display-max для корректной работы кнопок +/-
-    quantitySelector.dataset.displayMax = availableQty;
+    // Обновляем текст остатка
+    stockElement.textContent = `В наличии: ${displayQuantity} шт.`;
     
-    // Обновляем блок информации о наличии
-    if (inCartQty > 0) {
-        stockInfoContainer.innerHTML = `
-            <span class="flower-in-cart">🛒 В корзине: ${inCartQty} шт</span>
-            <span class="flower-stock">Ещё доступно: ${availableQty} шт.</span>
-        `;
-    } else {
-        stockInfoContainer.innerHTML = `
-            <span class="flower-stock">В наличии: ${availableQty} шт.</span>
-        `;
-    }
-    
-    // Сбрасываем счётчик на 1
-    quantityDisplay.textContent = '1';
-    
-    if (availableQty <= 0) {
+    if (displayQuantity <= 0) {
         // Скрываем карточку если товара не осталось
         flowerItem.classList.add('hidden');
     } else {
-        // Активируем кнопку
-        addButton.disabled = false;
+        // Перерисовываем action-секцию
+        actionsContainer.innerHTML = renderCartActions(id, name, price, maxQuantity, inCartQty, displayQuantity);
+    }
+}
+
+/**
+ * Обработчик клика на "Ещё" - показывает панель добавления
+ * @param {HTMLElement} button - Кнопка "Ещё"
+ */
+export function handleAddMoreClick(button) {
+    const panel = button.closest('.actions-container').querySelector('.add-more-panel');
+    if (panel) {
+        panel.classList.toggle('hidden');
+        button.classList.toggle('active');
     }
 }
