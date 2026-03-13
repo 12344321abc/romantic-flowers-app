@@ -5,7 +5,7 @@
 
 import { getElement, showToast } from './utils.js';
 import { updateNav, setPageInitCallback } from './navigation.js';
-import { initCatalogPage, handleAddToCart, handleAddMoreClick } from './catalog.js';
+import { initCatalogPage, handleAddToCart, handleCartCounterChange } from './catalog.js';
 import { initCartPage, handlePlaceOrder, updateCartQuantity, removeFromCart } from './cart.js';
 import { initAccountPage } from './account.js';
 import { handleLogin, initLoginValidation } from './auth.js';
@@ -46,17 +46,14 @@ setPageInitCallback(initPage);
  * Глобальные обработчики событий клика
  */
 document.body.addEventListener('click', e => {
-    // Добавление в корзину
+    // Добавление в корзину (первое добавление)
     if (e.target.matches('.add-to-cart-btn')) {
-        const flowerItem = e.target.closest('.flower-item');
-        if (flowerItem) {
-            handleAddToCart(flowerItem);
-        }
+        handleAddToCart(e.target);
     }
     
-    // Кнопка "Ещё" - показать панель добавления
-    if (e.target.matches('.add-more-btn')) {
-        handleAddMoreClick(e.target);
+    // Изменение количества в счётчике корзины (+ / -)
+    if (e.target.matches('.cart-counter-btn')) {
+        handleCartCounterChange(e.target);
     }
     
     // Удаление из корзины
