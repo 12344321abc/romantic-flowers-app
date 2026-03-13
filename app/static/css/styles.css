@@ -791,27 +791,33 @@ footer a:hover {
 }
 
 /* Ozon-style cart counter - shows when item is in cart */
+/* Matches the dimensions and style of .add-to-cart-btn */
 .cart-counter {
     display: flex;
     align-items: center;
     width: 100%;
-    background: var(--color-success-soft);
+    background: linear-gradient(135deg, #4caf7d 0%, #2e7d55 100%);
     border-radius: var(--radius-md);
     overflow: hidden;
-    border: 2px solid var(--color-success);
-    transition: all var(--transition-fast);
+    border: none;
+    box-shadow: var(--shadow-sm), 0 2px 8px rgba(76, 175, 125, 0.3);
+    transition: all var(--transition-base);
+    position: relative;
+}
+
+.cart-counter:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg), 0 4px 20px rgba(76, 175, 125, 0.4);
 }
 
 .cart-counter-btn {
     width: 44px;
-    height: 44px;
-    padding: 0;
-    font-size: 1.3rem;
+    padding: var(--space-3) 0;
+    font-size: 1.2rem;
     font-weight: 600;
-    line-height: 40px;
     text-align: center;
     background: transparent;
-    color: var(--color-success);
+    color: white;
     border: none;
     border-radius: 0;
     box-shadow: none;
@@ -820,8 +826,7 @@ footer a:hover {
 }
 
 .cart-counter-btn:hover:not(:disabled) {
-    background: var(--color-success);
-    color: white;
+    background: rgba(255, 255, 255, 0.2);
     transform: none;
     box-shadow: none;
 }
@@ -832,27 +837,26 @@ footer a:hover {
 }
 
 .cart-counter-btn.minus {
-    border-right: 1px solid rgba(76, 175, 125, 0.3);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .cart-counter-btn.plus {
-    border-left: 1px solid rgba(76, 175, 125, 0.3);
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .cart-counter-value {
     flex: 1;
     text-align: center;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--color-success);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: white;
     text-decoration: none;
-    padding: var(--space-2) var(--space-1);
+    padding: var(--space-3) var(--space-1);
     transition: all var(--transition-fast);
 }
 
 .cart-counter-value:hover {
-    background: var(--color-success);
-    color: white;
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .cart-counter-value::after {
