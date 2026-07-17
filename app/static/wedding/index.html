@@ -72,10 +72,10 @@
     .skip-link:focus { top:1rem; }
     .container { width:min(calc(100% - 2rem), var(--content)); margin-inline:auto; }
     .section { padding: clamp(var(--space-12), 8vw, var(--space-24)) 0; }
-    .eyebrow { display:inline-flex; align-items:center; gap:.5rem; padding:.45rem .9rem; border:1px solid var(--color-border); border-radius:999px; color:var(--color-text-muted); font-size:var(--text-xs); letter-spacing:.08em; text-transform:uppercase; background:rgba(255,255,255,.02); }
+    .eyebrow { display:inline-flex; align-items:center; gap:.5rem; padding:.45rem .9rem; border:1px solid var(--color-border); border-radius:999px; color:var(--color-text-muted); font-size:var(--text-xs); letter-spacing:.08em; text-transform:uppercase; background:rgba(255,255,255,.02); margin-bottom: var(--space-4); }
     .eyebrow::before { content:""; width:.45rem; height:.45rem; border-radius:50%; background:var(--color-primary); box-shadow:0 0 0 5px rgba(183,208,138,.16); }
-    .section-title { margin:0 0 .75rem; font-family:var(--font-display); font-size:var(--text-xl); line-height:1; font-weight:600; }
-    .section-intro { margin:0; color:var(--color-text-muted); max-width:42rem; }
+    .section-title { margin:0 0 var(--space-4); font-family:var(--font-display); font-size:var(--text-xl); line-height:1.05; font-weight:600; }
+    .section-intro { margin:0 0 var(--space-5); color:var(--color-text-muted); max-width:42rem; }
     .site-header { position:sticky; top:0; z-index:30; backdrop-filter: blur(14px); background:rgba(23,20,17,.78); border-bottom:1px solid var(--color-divider); }
     .nav { min-height:4.4rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
     .brand { display:flex; align-items:center; gap:.8rem; min-width:0; }
@@ -171,7 +171,7 @@
     .muted { color:var(--color-text-muted); }
     .program-list li { grid-template-columns:auto 1fr; gap:var(--space-4); align-items:start; }
     .program-list strong { min-width:4.2rem; }
-    .detail-card { padding:var(--space-5); display:grid; gap:var(--space-3); text-align:left; }
+    .detail-card { padding:var(--space-5); display:grid; gap:var(--space-3); text-align:left; align-content:start; height:100%; }
     .detail-card p { margin:0; color:var(--color-text-muted); text-align:left; }
     .detail-card h3 { margin:0; font-size:var(--text-lg); text-align:left; }
     .detail-chip { display:inline-flex; width:fit-content; padding:.35rem .75rem; border-radius:999px; background:rgba(183,208,138,.18); color:var(--color-primary); font-size:var(--text-xs); letter-spacing:.06em; text-transform:uppercase; justify-self:start; }
@@ -198,8 +198,8 @@
     @media (min-width: 720px) {
       .mini-link { display:inline-flex; }
       .nav-links { display:flex; }
-      /* Десктоп: детали в 3 колонки с ограничением ширины и воздухом между карточками */
-      .details-grid { grid-template-columns:repeat(3, minmax(0,1fr)); gap: var(--space-5); justify-items:stretch; text-align:left; max-width:68rem; margin-inline:auto; }
+      /* Десктоп: детали в 3 колонки с ограничением ширины, выравниванием высоты и воздухом */
+      .details-grid { grid-template-columns:repeat(3, minmax(0,1fr)); gap: var(--space-5); justify-items:stretch; align-items:stretch; grid-auto-rows:1fr; text-align:left; max-width:68rem; margin-inline:auto; }
       /* RSVP+контакты: 2 колонки, компактный центрированный контейнер */
       .rsvp-grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--space-5); justify-items:stretch; text-align:left; max-width:56rem; margin-inline:auto; align-items:start; }
       .detail-card, .rsvp-card, .contact-card { text-align:left; }
@@ -333,11 +333,16 @@
       text-align: center;
       max-width: 34rem;
       color: #f6efe0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-4);
     }
     .photo-bg-content .section-title,
-    .photo-bg-content .script-tag { color: #f6efe0; }
-    .photo-bg-content .section-intro { color: rgba(246,239,224,.86); margin: 0 auto; }
-    .photo-bg-content .eyebrow { color: #f6efe0; border-color: rgba(246,239,224,.4); background: rgba(0,0,0,.15); }
+    .photo-bg-content .script-tag { color: #f6efe0; margin: 0; }
+    .photo-bg-content .eyebrow { color: #f6efe0; border-color: rgba(246,239,224,.4); background: rgba(0,0,0,.15); margin-bottom: 0; }
+    .photo-bg-content .section-intro { color: rgba(246,239,224,.86); margin: 0; }
+    .photo-bg-content .btn { margin-top: var(--space-2); }
 
     .photo-card.comic { display:flex; align-items:flex-start; justify-content:center; padding-top:1rem; }
     .comic-bubble {
@@ -394,11 +399,15 @@
       padding: clamp(var(--space-10), 6vw, var(--space-16)) 0;
       text-align: center;
       color: #f6efe0;
+      display: flex;
+      flex-direction: column;
     }
+    .dresscode-section .container { display:flex; flex-direction:column; align-items:center; gap: var(--space-4); }
     .dresscode-section .section-title,
-    .dresscode-section .eyebrow { color: #f6efe0; }
+    .dresscode-section .eyebrow { color: #f6efe0; margin: 0; }
     .dresscode-section .eyebrow { border-color: rgba(246,239,224,.4); background: rgba(0,0,0,.12); }
-    .dresscode-section .section-intro { color: rgba(246,239,224,.86); margin: 0 auto; max-width: 32rem; }
+    .dresscode-section .section-intro { color: rgba(246,239,224,.86); margin: 0; max-width: 32rem; }
+    .dresscode-section .swatches { margin-top: var(--space-2); }
 </style>
 </head>
 <body>
