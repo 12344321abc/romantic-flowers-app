@@ -21,3 +21,11 @@ async def admin_page():
     Страница администратора
     """
     return FileResponse('app/static/admin.html')
+
+
+@router.get("/wedding", response_class=HTMLResponse)
+async def wedding_page():
+    """
+    Секретная страница-приглашение на свадьбу
+    """
+    return FileResponse('app/static/wedding/index.html')

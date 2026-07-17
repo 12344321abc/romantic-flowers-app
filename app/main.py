@@ -27,6 +27,14 @@ UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 # Подключение статических файлов
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 
+# Статические файлы для секретной страницы-приглашения /wedding
+# (HTML использует относительные пути assets/..., которые разрешаются в /wedding/assets/...)
+app.mount(
+    "/wedding/assets",
+    StaticFiles(directory=str(BASE_DIR / "static" / "wedding" / "assets")),
+    name="wedding-assets",
+)
+
 # --- Подключение роутеров ---
 app.include_router(auth_router.router)
 app.include_router(flowers.router)
