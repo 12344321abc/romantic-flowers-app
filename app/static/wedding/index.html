@@ -78,8 +78,9 @@
     .section-intro { margin:0; color:var(--color-text-muted); max-width:42rem; }
     .site-header { position:sticky; top:0; z-index:30; backdrop-filter: blur(14px); background:rgba(23,20,17,.78); border-bottom:1px solid var(--color-divider); }
     .nav { min-height:4.4rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
-    .brand { display:flex; align-items:center; gap:.8rem; }
-    .brand-mark { width:2.6rem; height:2.6rem; border-radius:50%; display:grid; place-items:center; border:1px solid var(--color-border); color:var(--color-accent-soft); background:rgba(255,255,255,.02); }
+    .brand { display:flex; align-items:center; gap:.8rem; min-width:0; }
+    .brand-mark { width:2.6rem; height:2.6rem; flex-shrink:0; border-radius:50%; display:grid; place-items:center; border:1px solid var(--color-border); color:var(--color-accent-soft); background:rgba(255,255,255,.02); }
+    .brand-text { min-width:0; }
     .brand-text strong { display:block; font-size:var(--text-sm); }
     .brand-text span { display:block; font-size:var(--text-xs); color:var(--color-text-muted); }
     .nav-actions { display:flex; align-items:center; gap:1.1rem; }
@@ -202,9 +203,15 @@
       .nav-links { display:flex; }
     }
     @media (max-width: 719px) {
-      .nav { align-items:flex-start; padding:.8rem 0; }
-      .nav-actions { width:100%; justify-content:flex-end; }
-      .nav-actions .btn { min-height:2.6rem; width:auto; padding:.6rem 1rem; font-size:var(--text-xs); }
+      .site-header { padding: 0; }
+      .nav { min-height:0; align-items:center; padding:.5rem 0; gap:.6rem; }
+      .brand { gap:.5rem; }
+      .brand-mark { width:2rem; height:2rem; }
+      .brand-mark svg { width:18px; height:18px; }
+      .brand-text strong { font-size:.85rem; }
+      .brand-text span { display:none; }
+      .nav-actions { width:auto; flex-shrink:0; justify-content:flex-end; }
+      .nav-actions .btn { min-height:2.2rem; width:auto; padding:.4rem .8rem; font-size:.72rem; letter-spacing:.02em; }
       .nav-actions .btn-primary { white-space:nowrap; }
       .photo-pair { grid-template-columns:1fr 1fr; gap:.8rem; }
       .photo-card { min-height:15rem; }
@@ -223,6 +230,10 @@
       .photo-bg-content { padding: 0 .5rem; }
       .single-photo-row { grid-template-columns: 1fr; text-align:center; }
       .pink-note--left, .pink-note--right { text-align:center; }
+    }
+    @media (max-width: 380px) {
+      .brand-text strong { font-size:.78rem; }
+      .nav-actions .btn { padding:.4rem .6rem; font-size:.68rem; }
     }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } * { transition:none !important; } }
 
@@ -550,9 +561,9 @@
             <p>Если захотите нас порадовать, будем благодарны за денежный подарок или небольшой подарок, который будет удобно увезти с собой в самолёте.</p>
           </article>
           <article class="detail-card" id="stay">
-            <span class="detail-chip">Проживание</span>
+            <span class="detail-chip">Место для проживания</span>
             <h3>Размещение для гостей из других городов</h3>
-            <p>Если вам понадобится ночлег в Тюмени, пожалуйста, укажите это в анкете. Мы можем предложить двухместный номер в Azimut в центре города за 4 500 ₽ или учтём, что вы выберете жильё самостоятельно.</p>
+            <p>Если вам понадобится место для проживания в Тюмени, пожалуйста, укажите это в анкете. Мы можем предложить двухместный номер в Azimut в центре города за 4 500 ₽ или учтём, что вы выберете жильё самостоятельно.</p>
           </article>
           <article class="detail-card" id="transfer">
             <span class="detail-chip">Трансфер</span>
