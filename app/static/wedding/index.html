@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <meta name="supported-color-schemes" content="light" />
   <title>Свадьба Любови и Виталия</title>
   <meta name="description" content="Сайт-приглашение на свадьбу Любови и Виталия — дата, программа, дресс-код, проживание, трансфер и подтверждение присутствия." />
   <meta property="og:title" content="Свадьба Любови и Виталия" />
@@ -13,6 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Marck+Script&display=swap" rel="stylesheet">
   <style>
     :root {
+      color-scheme: light;
       --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
       --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
       --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
@@ -111,7 +114,7 @@
       min-height:26rem;
       border-radius:1.6rem;
       overflow:hidden;
-      background: linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.28)), url('assets/hero_together.jpg') center 30%/cover;
+      background: linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.28)), url('/wedding/assets/hero_together.jpg') center 30%/cover;
       border:1px solid rgba(237,220,194,.08);
       box-shadow: var(--shadow-lg);
     }
@@ -160,9 +163,9 @@
     .calendar-day.active b { position:relative; z-index:1; }
         .hero-actions { display:flex; flex-wrap:wrap; gap:.75rem; justify-content:center; margin-top:var(--space-5); }
     .countdown { margin-top:var(--space-5); display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:.7rem; }
-    .countdown-item { padding:1.1rem .7rem; border-radius:1.1rem; text-align:center; background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); border:1px solid var(--color-divider); }
-    .countdown-item strong { display:block; font-family:var(--font-display); font-size:clamp(1.4rem, 4vw, 2rem); color:var(--color-primary); }
-    .countdown-item span { font-size:var(--text-xs); color:var(--color-text-faint); letter-spacing:.08em; text-transform:uppercase; }
+    .countdown-item { padding:1.1rem .7rem; border-radius:1.1rem; text-align:center; background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); border:1px solid var(--color-divider); min-width:0; }
+    .countdown-item strong { display:block; font-family:var(--font-display); font-size:clamp(1.4rem, 4vw, 2rem); color:var(--color-primary); line-height:1; white-space:nowrap; }
+    .countdown-item span { font-size:var(--text-xs); color:var(--color-text-faint); letter-spacing:.08em; text-transform:uppercase; white-space:nowrap; }
 
     .grid-2, .details-grid, .rsvp-grid, .faq-wrap { display:grid; grid-template-columns:1fr; gap:var(--space-4); justify-items:center; text-align:center; max-width:40rem; margin-inline:auto; }
     .panel { padding: clamp(var(--space-5), 4vw, var(--space-8)); }
@@ -201,6 +204,8 @@
     @media (max-width: 719px) {
       .nav { align-items:flex-start; padding:.8rem 0; }
       .nav-actions { width:100%; justify-content:flex-end; }
+      .nav-actions .btn { min-height:2.6rem; width:auto; padding:.6rem 1rem; font-size:var(--text-xs); }
+      .nav-actions .btn-primary { white-space:nowrap; }
       .photo-pair { grid-template-columns:1fr 1fr; gap:.8rem; }
       .photo-card { min-height:15rem; }
       .hero-title { max-width:10ch; }
@@ -208,7 +213,10 @@
       .hero-date-min { display:block; }
       .calendar-grid { gap:.35rem; }
       .calendar-grid span, .calendar-day { font-size:.95rem; }
-      .countdown { grid-template-columns:repeat(2, minmax(0,1fr)); }
+      .countdown { grid-template-columns:repeat(4, minmax(0,1fr)); gap:.4rem; }
+      .countdown-item { padding:.7rem .35rem; }
+      .countdown-item strong { font-size:clamp(1.1rem, 5vw, 1.5rem); }
+      .countdown-item span { font-size:.65rem; letter-spacing:.04em; }
       .hero-actions { flex-direction:column; }
       .btn { width:100%; }
       .photo-bg-section { min-height:52vh; padding: var(--space-8) 0; background-attachment: scroll; }
@@ -503,7 +511,7 @@
       </div>
     </section>
 
-    <section class="photo-bg-section" style="background-image:url('assets/hero_kiss.jpg');" id="map">
+    <section class="photo-bg-section" style="background-image:url('/wedding/assets/hero_kiss.jpg');" id="map">
       <div class="photo-bg-overlay"></div>
       <div class="container photo-bg-content">
         <span class="eyebrow">Место проведения</span>
