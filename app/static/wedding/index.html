@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="color-scheme" content="light" />
-  <meta name="supported-color-schemes" content="light" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="supported-color-schemes" content="dark" />
   <title>Свадьба Любови и Виталия</title>
   <meta name="description" content="Сайт-приглашение на свадьбу Любови и Виталия — дата, программа, дресс-код, проживание, трансфер и подтверждение присутствия." />
   <meta property="og:title" content="Свадьба Любови и Виталия" />
@@ -15,7 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Marck+Script&display=swap" rel="stylesheet">
   <style>
     :root {
-      color-scheme: light;
+      color-scheme: dark;
       --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
       --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
       --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
@@ -91,18 +91,12 @@
     .btn:hover { transform:translateY(-1px); }
     .btn-primary { background:var(--color-primary); color:var(--color-text-inverse); box-shadow:var(--shadow-sm); }
     .btn-primary:hover { background:var(--color-primary-hover); }
-    .btn-secondary { background:transparent; color:var(--color-text); border-color:var(--color-border); }
-    .btn-secondary:hover { background:rgba(255,255,255,.03); }
 
     .hero { padding: clamp(var(--space-10), 5vw, var(--space-16)) 0 var(--space-12); }
-    .hero-grid { display:grid; gap:var(--space-6); }
-    .hero-card, .panel, .detail-card, .faq-item, .rsvp-card, .contact-card { background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.01)); border:1px solid var(--color-border); border-radius:var(--radius-xl); box-shadow:var(--shadow-md); }
+    .hero-card, .detail-card, .faq-item, .rsvp-card, .contact-card { background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.01)); border:1px solid var(--color-border); border-radius:var(--radius-xl); box-shadow:var(--shadow-md); }
     .hero-card { padding: clamp(var(--space-5), 4vw, var(--space-8)); overflow:hidden; }
-    .hero-topline { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; }
     .hero-title { margin:0; font-family:var(--font-display); font-size:var(--text-2xl); line-height:.92; font-weight:700; letter-spacing:.01em; text-transform:uppercase; color:var(--color-accent-soft); }
-    .hero-script { margin:.5rem 0 0; font-family:var(--font-script); font-size:clamp(1.5rem, 4vw, 2.3rem); line-height:.95; color:var(--color-accent-soft); max-width:18ch; transform:rotate(-4deg); transform-origin: left center; }
     .hero-layout { display:grid; gap:var(--space-5); margin-top:var(--space-5); }
-    .photo-pair { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-4); align-items:end; }
     .single-photo-row {
       display:grid;
       grid-template-columns: 1fr 2fr 1fr;
@@ -135,9 +129,6 @@
     }
     .pink-note--left { text-align:right; align-self:center; }
     .pink-note--right { text-align:left; align-self:center; }
-    .clip-mark { position:absolute; top:1rem; right:1rem; width:2.4rem; height:4rem; color:var(--color-accent-soft); z-index:2; opacity:.9; }
-    .clip-mark svg { width:100%; height:100%; }
-    .side-note { font-family:var(--font-script); font-size:clamp(1.35rem, 3vw, 2rem); color:var(--color-accent-soft); text-align:right; margin-top:.4rem; }
     .calendar-block { padding: clamp(var(--space-5), 4vw, var(--space-8)) 0 0; max-width:32rem; margin-inline:auto; }
     .calendar-title { margin:0 0 1rem; text-align:center; font-size:clamp(1.7rem, 4vw, 2.2rem); text-transform:uppercase; font-weight:700; letter-spacing:.02em; }
     .calendar-grid { display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); gap:.6rem; text-align:center; }
@@ -168,7 +159,10 @@
     .countdown-item strong { display:block; font-family:var(--font-display); font-size:clamp(1.4rem, 4vw, 2rem); color:var(--color-primary); line-height:1; white-space:nowrap; }
     .countdown-item span { font-size:var(--text-xs); color:var(--color-text-faint); letter-spacing:.08em; text-transform:uppercase; white-space:nowrap; }
 
-    .grid-2, .details-grid, .rsvp-grid, .faq-wrap { display:grid; grid-template-columns:1fr; gap:var(--space-4); justify-items:center; text-align:center; max-width:40rem; margin-inline:auto; }
+    /* Мобильный baseline: одна колонка, центр, ограничение ширины */
+    .grid-2, .faq-wrap { display:grid; grid-template-columns:1fr; gap:var(--space-4); justify-items:center; text-align:center; max-width:40rem; margin-inline:auto; }
+    .details-grid { display:grid; grid-template-columns:1fr; gap:var(--space-4); justify-items:center; text-align:center; max-width:40rem; margin-inline:auto; }
+    .rsvp-grid { display:grid; grid-template-columns:1fr; gap:var(--space-4); justify-items:center; text-align:center; max-width:40rem; margin-inline:auto; }
     .panel { padding: clamp(var(--space-5), 4vw, var(--space-8)); }
     .timing-list, .program-list, .contact-list { list-style:none; padding:0; margin:0; }
     .timing-list li, .program-list li, .contact-list li { display:grid; gap:.35rem; padding:1rem 0; border-bottom:1px solid var(--color-divider); }
@@ -178,7 +172,7 @@
     .program-list li { grid-template-columns:auto 1fr; gap:var(--space-4); align-items:start; }
     .program-list strong { min-width:4.2rem; }
     .detail-card { padding:var(--space-5); display:grid; gap:var(--space-3); }
-    .detail-card p { margin:0; color:var(--color-text-muted); }
+    .detail-card p { margin:0; color:var(--color-text-muted); text-align:left; }
     .detail-card h3 { margin:0; font-size:var(--text-lg); }
     .detail-chip { display:inline-flex; width:fit-content; padding:.35rem .75rem; border-radius:999px; background:rgba(183,208,138,.18); color:var(--color-primary); font-size:var(--text-xs); letter-spacing:.06em; text-transform:uppercase; }
     .faq-item { padding:var(--space-5); }
@@ -201,6 +195,11 @@
     @media (min-width: 720px) {
       .mini-link { display:inline-flex; }
       .nav-links { display:flex; }
+      /* Десктоп: детали в 3 колонки, RSVP+контакты в 2 колонки, без жёсткого max-width */
+      .details-grid { grid-template-columns:repeat(3, minmax(0,1fr)); justify-items:stretch; text-align:left; max-width:none; }
+      .rsvp-grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); justify-items:stretch; text-align:left; max-width:none; align-items:start; }
+      .detail-card, .rsvp-card, .contact-card { text-align:left; }
+      .rsvp-card .section-intro, .contact-card .section-intro { margin-left:0; }
     }
     @media (max-width: 719px) {
       .site-header { padding: 0; }
@@ -213,8 +212,6 @@
       .nav-actions { width:auto; flex-shrink:0; justify-content:flex-end; }
       .nav-actions .btn { min-height:2.2rem; width:auto; padding:.4rem .8rem; font-size:.72rem; letter-spacing:.02em; }
       .nav-actions .btn-primary { white-space:nowrap; }
-      .photo-pair { grid-template-columns:1fr 1fr; gap:.8rem; }
-      .photo-card { min-height:15rem; }
       .hero-title { max-width:10ch; }
       .calendar-block { display:none; }
       .hero-date-min { display:block; }
@@ -432,7 +429,6 @@
     <section class="hero container" id="top">
       <article class="hero-card">
         <h1 class="hero-title">Любовь и Виталий</h1>
-        <p class="hero-script">— интересно, кто будет моей женой? — ей буду я</p>
 
         <div class="hero-layout">
           <div class="single-photo-row">
@@ -567,7 +563,7 @@
           </article>
           <article class="detail-card" id="transfer">
             <span class="detail-chip">Трансфер</span>
-            <h3>Трансфер</h3>
+            <h3>Мы позаботимся о дороге</h3>
             <p>Мы организуем трансфер для гостей, которым он понадобится. Пожалуйста, отметьте это в анкете — так мы заранее рассчитаем количество мест и сообщим детали ближе к празднику.</p>
           </article>
         </div>
