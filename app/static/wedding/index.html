@@ -609,9 +609,9 @@
             <div class="field">
               <label>Сможете ли вы прийти?</label>
               <ul class="rsvp-choice-list">
-                <li><input type="radio" id="att-yes" name="attendance" value="yes" required><label for="att-yes">Да, с радостью приду</label></li>
-                <li><input type="radio" id="att-no" name="attendance" value="no"><label for="att-no">К сожалению, не смогу</label></li>
-                <li><input type="radio" id="att-later" name="attendance" value="later"><label for="att-later">Сообщу позже</label></li>
+                <li><input type="radio" id="att-yes" name="attending" value="yes" required><label for="att-yes">Да, с радостью приду</label></li>
+                <li><input type="radio" id="att-no" name="attending" value="no"><label for="att-no">К сожалению, не смогу</label></li>
+                <li><input type="radio" id="att-later" name="attending" value="later"><label for="att-later">Сообщу позже</label></li>
               </ul>
             </div>
 
@@ -633,41 +633,34 @@
             <div class="field">
               <label>Понадобится ли вам размещение в Тюмени?</label>
               <ul class="rsvp-choice-list">
-                <li><input type="radio" id="stay-hotel" name="stayOption" value="hotel"><label for="stay-hotel">Да, подойдёт номер в Azimut за 4 500 ₽</label></li>
-                <li><input type="radio" id="stay-own" name="stayOption" value="own"><label for="stay-own">Да, выберу жильё самостоятельно</label></li>
-                <li><input type="radio" id="stay-no" name="stayOption" value="no"><label for="stay-no">Нет, размещение не потребуется</label></li>
+                <li><input type="radio" id="stay-hotel" name="stay" value="hotel"><label for="stay-hotel">Да, подойдёт номер в Azimut за 4 500 ₽</label></li>
+                <li><input type="radio" id="stay-own" name="stay" value="own"><label for="stay-own">Да, выберу жильё самостоятельно</label></li>
+                <li><input type="radio" id="stay-no" name="stay" value="no"><label for="stay-no">Нет, размещение не потребуется</label></li>
               </ul>
             </div>
 
             <div class="field">
               <label>Нужен ли вам трансфер?</label>
               <ul class="rsvp-choice-list">
-                <li><input type="radio" id="transfer-yes" name="transferNeed" value="yes"><label for="transfer-yes">Да, мне понадобится трансфер</label></li>
-                <li><input type="radio" id="transfer-no" name="transferNeed" value="no"><label for="transfer-no">Нет, доберусь самостоятельно</label></li>
+                <li><input type="radio" id="transfer-yes" name="transfer" value="yes"><label for="transfer-yes">Да, мне понадобится трансфер</label></li>
+                <li><input type="radio" id="transfer-no" name="transfer" value="no"><label for="transfer-no">Нет, доберусь самостоятельно</label></li>
               </ul>
             </div>
 
-            <div class="field"><label for="comment">Комментарий</label><textarea id="comment" name="comment" placeholder="Любая важная информация для нас и организатора"></textarea></div>
+            <div class="field"><label for="comment">Комментарий</label><textarea id="comment" name="message" placeholder="Любая важная информация для нас и организатора"></textarea></div>
             <button class="btn btn-primary" type="submit">Отправить анкету</button>
             <p class="inline-note">Просим заполнить анкету до 20.08.2026 — это поможет нам с заботой подготовиться к вашему приезду и празднику.</p>
           </form>
           <p class="form-success" id="rsvp-success" role="status" aria-live="polite">Спасибо! Анкета отправлена. Мы свяжемся с вами, если понадобятся уточнения.</p>
+          <p class="form-success form-error" id="rsvp-error" role="alert" aria-live="assertive" style="display:none; border-color: #d39a7a; background: rgba(211,154,122,.12); color: #f0c6ac;">Не удалось отправить анкету. Проверьте подключение к интернету и попробуйте ещё раз.</p>
           <!--
-            Место для подключения реальной отправки формы.
-            Варианты:
-              • Telegram-бот: отправка данных в чат через Bot API (fetch на https://api.telegram.org/bot<token>/sendMessage).
-              • Supabase: insert в таблицу через supabase-js.
-              • Formspree / Getform: POST на ваш endpoint.
-              • Собственный API: POST JSON на ваш бэкенд.
-            Сейчас форма показывает состояние-заглушку без браузерного alert.
-            Пример обработчика:
-              form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                if (!form.checkValidity()) { form.reportValidity(); return; }
-                const data = new FormData(form);
-                await fetch('https://your-endpoint.example', { method: 'POST', body: data });
-                showSuccess();
-              });
+            Отправка анкеты идёт в Google Таблицу через Google Apps Script (doPost).
+            URL задан в константе RSVP_ENDPOINT в <script> ниже.
+            Имена полей формы совпадают с заголовками колонок таблицы:
+              timestamp (ставится скриптом), name, attending, drinks, allergy, kids, stay, transfer, message.
+            Поле drinks (несколько чекбоксов) скрипт объединяет через ', '.
+            Из-за ограничений CORS Apps Script ответ не читается в браузере —
+            отправляем в mode:'no-cors' (данные доходят, ответ opaque), что достаточно для записи в таблицу.
           -->
         </article>
 
@@ -719,19 +712,59 @@
       setInterval(updateCountdown, 1000);
     })();
 
-    // Обработка отправки анкеты: состояние-заглушка без браузерного alert.
-    // Место для реальной отправки — см. комментарий в .rsvp-card выше.
+    // Отправка анкеты в Google Таблицу через Google Apps Script (doPost).
+    // Google Apps Script не отдаёт CORS-заголовки на чтение ответа из браузера,
+    // поэтому используем mode:'no-cors' — данные доходят (opaque-ответ),
+    // но прочитать ответ нельзя. Записи появляются в таблице.
     (function() {
       const form = document.getElementById('rsvp-form');
       const card = document.getElementById('rsvp-card');
       const success = document.getElementById('rsvp-success');
-      if (!form || !card || !success) return;
+      const error = document.getElementById('rsvp-error');
+      const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+      if (!form || !card || !success || !error) return;
+
+      // URL вашего развёрнутого Google Apps Script (doPost).
+      const RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwkqhPXURfYkxc0atJIX3UpBHqXdvmrxEN9BIIGEETU9C-W8oVeu4Q-W3cSJJN5ymKz/exec';
+
+      let sending = false;
+
       form.addEventListener('submit', function(e) {
         e.preventDefault();
+        if (sending) return;
         if (!form.checkValidity()) { form.reportValidity(); return; }
-        card.classList.add('is-submitted');
-        success.classList.add('is-visible');
-        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        sending = true;
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.dataset.label = submitBtn.textContent;
+          submitBtn.textContent = 'Отправляем…';
+        }
+        error.style.display = 'none';
+        success.classList.remove('is-visible');
+
+        const data = new FormData(form);
+
+        fetch(RSVP_ENDPOINT, { method: 'POST', body: data, mode: 'no-cors' })
+          .then(function() {
+            // no-cors => ответ opaque, статус всегда 0. Считаем отправку успешной.
+            card.classList.add('is-submitted');
+            success.classList.add('is-visible');
+            form.reset();
+            success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          })
+          .catch(function(err) {
+            // Сюда попадаем только при сетевой ошибке (offline/DNS).
+            error.style.display = 'block';
+            error.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          })
+          .finally(function() {
+            sending = false;
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = submitBtn.dataset.label || 'Отправить анкету';
+            }
+          });
       });
     })();
   </script>
