@@ -609,9 +609,9 @@
             <div class="field">
               <label>Сможете ли вы прийти?</label>
               <ul class="rsvp-choice-list">
-                <li><input type="radio" id="att-yes" name="attending" value="yes" required><label for="att-yes">Да, с радостью приду</label></li>
-                <li><input type="radio" id="att-no" name="attending" value="no"><label for="att-no">К сожалению, не смогу</label></li>
-                <li><input type="radio" id="att-later" name="attending" value="later"><label for="att-later">Сообщу позже</label></li>
+                <li><input type="radio" id="att-yes" name="attendance" value="yes" required><label for="att-yes">Да, с радостью приду</label></li>
+                <li><input type="radio" id="att-no" name="attendance" value="no"><label for="att-no">К сожалению, не смогу</label></li>
+                <li><input type="radio" id="att-later" name="attendance" value="later"><label for="att-later">Сообщу позже</label></li>
               </ul>
             </div>
 
@@ -633,21 +633,21 @@
             <div class="field">
               <label>Понадобится ли вам размещение в Тюмени?</label>
               <ul class="rsvp-choice-list">
-                <li><input type="radio" id="stay-hotel" name="stay" value="hotel"><label for="stay-hotel">Да, подойдёт номер в Azimut за 4 500 ₽</label></li>
-                <li><input type="radio" id="stay-own" name="stay" value="own"><label for="stay-own">Да, выберу жильё самостоятельно</label></li>
-                <li><input type="radio" id="stay-no" name="stay" value="no"><label for="stay-no">Нет, размещение не потребуется</label></li>
+                <li><input type="radio" id="stay-hotel" name="stayOption" value="hotel"><label for="stay-hotel">Да, подойдёт номер в Azimut за 4 500 ₽</label></li>
+                <li><input type="radio" id="stay-own" name="stayOption" value="own"><label for="stay-own">Да, выберу жильё самостоятельно</label></li>
+                <li><input type="radio" id="stay-no" name="stayOption" value="no"><label for="stay-no">Нет, размещение не потребуется</label></li>
               </ul>
             </div>
 
             <div class="field">
               <label>Нужен ли вам трансфер?</label>
               <ul class="rsvp-choice-list">
-                <li><input type="radio" id="transfer-yes" name="transfer" value="yes"><label for="transfer-yes">Да, мне понадобится трансфер</label></li>
-                <li><input type="radio" id="transfer-no" name="transfer" value="no"><label for="transfer-no">Нет, доберусь самостоятельно</label></li>
+                <li><input type="radio" id="transfer-yes" name="transferNeed" value="yes"><label for="transfer-yes">Да, мне понадобится трансфер</label></li>
+                <li><input type="radio" id="transfer-no" name="transferNeed" value="no"><label for="transfer-no">Нет, доберусь самостоятельно</label></li>
               </ul>
             </div>
 
-            <div class="field"><label for="comment">Комментарий</label><textarea id="comment" name="message" placeholder="Любая важная информация для нас и организатора"></textarea></div>
+            <div class="field"><label for="comment">Комментарий</label><textarea id="comment" name="comment" placeholder="Любая важная информация для нас и организатора"></textarea></div>
             <button class="btn btn-primary" type="submit">Отправить анкету</button>
             <p class="inline-note">Просим заполнить анкету до 20.08.2026 — это поможет нам с заботой подготовиться к вашему приезду и празднику.</p>
           </form>
@@ -657,7 +657,7 @@
             Отправка анкеты идёт в Google Таблицу через Google Apps Script (doPost).
             URL задан в константе RSVP_ENDPOINT в <script> ниже.
             Имена полей формы совпадают с заголовками колонок таблицы:
-              timestamp (ставится скриптом), name, attending, drinks, allergy, kids, stay, transfer, message.
+              timestamp (ставится скриптом), name, attendance, drinks, allergy, kids, stayOption, transferNeed, comment.
             Поле drinks (несколько чекбоксов) скрипт объединяет через ', '.
             Из-за ограничений CORS Apps Script ответ не читается в браузере —
             отправляем в mode:'no-cors' (данные доходят, ответ opaque), что достаточно для записи в таблицу.
