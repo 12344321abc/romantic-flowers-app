@@ -34,7 +34,7 @@
       --color-text-faint: #ab9878;
       --color-primary: #b7d08a;
       --color-primary-hover: #c4dd94;
-      --color-accent-soft: #d39aa7;
+      --color-accent-soft: #d9c39a;
       --color-accent-deep: #8e6848;
       --color-accent-block: #4a5638;
       --color-accent-block-text: #f3ecd9;
@@ -99,7 +99,7 @@
     .hero-layout { display:grid; gap:var(--space-5); margin-top:var(--space-5); }
     .single-photo-row {
       display:grid;
-      grid-template-columns: minmax(0, 12rem) minmax(0, 1fr) minmax(0, 12rem);
+      grid-template-columns: 1fr;
       gap: var(--space-5);
       align-items:center;
       margin-top: var(--space-8);
@@ -110,8 +110,7 @@
       border-radius:1.6rem;
       overflow:hidden;
       background: linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.28)), url('/wedding/assets/hero_together.jpg') center 30%/cover;
-      border:1px solid rgba(237,220,194,.22);
-      box-shadow: var(--shadow-lg), 0 0 0 1px rgba(237,220,194,.06), inset 0 0 0 1px rgba(255,255,255,.03);
+      box-shadow: var(--shadow-lg);
     }
     .single-photo-card::after {
       content:"";
@@ -119,16 +118,6 @@
       background: linear-gradient(180deg, transparent 55%, rgba(34,28,21,.55));
       pointer-events:none;
     }
-    .pink-note {
-      margin:0;
-      font-family: var(--font-script);
-      color: #e8779c;
-      font-size: clamp(1.15rem, 2.8vw, 1.5rem);
-      line-height:1.3;
-      text-align:center;
-    }
-    .pink-note--left { text-align:right; align-self:center; padding-right:.25rem; }
-    .pink-note--right { text-align:left; align-self:center; padding-left:.25rem; }
     .calendar-block { padding: clamp(var(--space-5), 4vw, var(--space-8)) 0 0; max-width:32rem; margin-inline:auto; }
     .calendar-title { margin:0 0 1rem; text-align:center; font-size:clamp(1.7rem, 4vw, 2.2rem); text-transform:uppercase; font-weight:700; letter-spacing:.02em; }
     .calendar-grid { display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); gap:.6rem; text-align:center; }
@@ -231,7 +220,7 @@
       .photo-bg-section { min-height:52vh; padding: var(--space-8) 0; background-attachment: scroll; }
       .photo-bg-content { padding: 0 .5rem; }
       .single-photo-row { grid-template-columns: 1fr; text-align:center; gap: var(--space-3); }
-      .pink-note--left, .pink-note--right { text-align:center; padding:0; }
+      .calendar-block { max-width:100%; padding: 0 .5rem; }
     }
     @media (max-width: 380px) {
       .brand-text strong { font-size:.78rem; }
@@ -446,9 +435,7 @@
 
         <div class="hero-layout">
           <div class="single-photo-row">
-            <p class="pink-note pink-note--left">— интересно,<br>кто будет<br>моей женой?</p>
             <div class="single-photo-card" aria-label="Фотография Любови и Виталия"></div>
-            <p class="pink-note pink-note--right">— ей буду я</p>
           </div>
         </div>
 
@@ -464,13 +451,6 @@
           <h2 class="calendar-title">Сентябрь, 2026</h2>
           <div class="calendar-grid" aria-hidden="true">
             <span>ПН</span><span>ВТ</span><span>СР</span><span>ЧТ</span><span>ПТ</span><span>СБ</span><span>ВС</span>
-            <div class="calendar-day muted">31</div>
-            <div class="calendar-day">1</div>
-            <div class="calendar-day">2</div>
-            <div class="calendar-day">3</div>
-            <div class="calendar-day">4</div>
-            <div class="calendar-day">5</div>
-            <div class="calendar-day">6</div>
             <div class="calendar-day">7</div>
             <div class="calendar-day">8</div>
             <div class="calendar-day">9</div>
@@ -478,27 +458,6 @@
             <div class="calendar-day">11</div>
             <div class="calendar-day">12</div>
             <div class="calendar-day active"><b>13</b></div>
-            <div class="calendar-day">14</div>
-            <div class="calendar-day">15</div>
-            <div class="calendar-day">16</div>
-            <div class="calendar-day">17</div>
-            <div class="calendar-day">18</div>
-            <div class="calendar-day">19</div>
-            <div class="calendar-day">20</div>
-            <div class="calendar-day">21</div>
-            <div class="calendar-day">22</div>
-            <div class="calendar-day">23</div>
-            <div class="calendar-day">24</div>
-            <div class="calendar-day">25</div>
-            <div class="calendar-day">26</div>
-            <div class="calendar-day">27</div>
-            <div class="calendar-day">28</div>
-            <div class="calendar-day">29</div>
-            <div class="calendar-day">30</div>
-            <div class="calendar-day muted">1</div>
-            <div class="calendar-day muted">2</div>
-            <div class="calendar-day muted">3</div>
-            <div class="calendar-day muted">4</div>
           </div>
         </div>
         <p class="hero-date-min" aria-label="Дата свадьбы"><span>Воскресенье, 13 сентября 2026</span></p>
