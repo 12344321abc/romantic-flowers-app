@@ -216,10 +216,12 @@
       .nav-actions .btn { min-height:2.2rem; width:auto; padding:.4rem .8rem; font-size:.72rem; letter-spacing:.02em; }
       .nav-actions .btn-primary { white-space:nowrap; }
       .hero-title { max-width:10ch; }
-      .calendar-block { display:none; }
-      .hero-date-min { display:block; }
-      .calendar-grid { gap:.35rem; }
-      .calendar-grid span, .calendar-day { font-size:.95rem; }
+      .calendar-block { max-width:100%; padding: 0 .5rem; }
+      .calendar-grid { gap:.25rem; }
+      .calendar-grid span, .calendar-day { font-size:.82rem; min-height:2.6rem; }
+      .calendar-day { min-height:2.6rem; }
+      .calendar-day.active::before { width:2.1rem; height:2.1rem; }
+      .hero-date-min { display:none; }
       .countdown { grid-template-columns:repeat(4, minmax(0,1fr)); gap:.4rem; }
       .countdown-item { padding:.7rem .35rem; }
       .countdown-item strong { font-size:clamp(1.1rem, 5vw, 1.5rem); }
@@ -452,6 +454,8 @@
 
         <div class="hero-greeting">
           <h2>Дорогие родные и близкие!</h2>
+          <p>13 сентября 2026 года мы скажем друг другу «да».</p>
+          <p>Этот день мы проведём среди природы, тёплого света гирлянд и самых близких людей.</p>
           <p>Мы очень ждём этот день и будем счастливы разделить его с вами.</p>
           <p><strong>Приглашаем вас стать частью нашего праздника — дня, когда мы станем семьёй.</strong></p>
         </div>
@@ -530,7 +534,7 @@
       </div>
     </section>
 
-    <section class="photo-bg-section" style="background-image:url('/wedding/assets/hero_kiss.jpg');" id="map">
+    <section class="photo-bg-section" style="background-image:url('/wedding/assets/house.jpg');" id="map">
       <div class="photo-bg-overlay"></div>
       <div class="container photo-bg-content">
         <span class="eyebrow">Место проведения</span>
