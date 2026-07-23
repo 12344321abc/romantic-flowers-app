@@ -192,6 +192,7 @@
     .contact-link:hover { transform:translateY(-1px); color:var(--color-primary-hover); text-decoration:underline; }
     .contact-link svg { color:var(--color-primary); transition: color var(--transition); }
     .contact-link:hover svg { color:var(--color-primary-hover); }
+    .nowrap { white-space:nowrap; }
     .footer { padding:var(--space-8) 0 var(--space-10); border-top:1px solid var(--color-divider); color:var(--color-text-faint); }
     .footer-wrap { display:flex; flex-direction:column; gap:.75rem; }
 
@@ -557,7 +558,7 @@
           </article>
           <article class="detail-card" id="stay">
             <h3>Размещение для гостей из других городов</h3>
-            <p>Если вам потребуется проживание в Тюмени, пожалуйста, укажите это в анкете. Мы можем предложить вариант размещения — двухместный номер в отеле Azimut в центре города стоимостью 4 500 ₽, либо вы можете выбрать жильё самостоятельно.</p>
+            <p>Если вам потребуется проживание в Тюмени, пожалуйста, укажите это в анкете. Мы можем предложить вариант размещения — двухместный номер в отеле <a class="contact-link" href="https://azimuthotels.com/ru/tyumen/azimut-hotel-tyumen" target="_blank" rel="noopener noreferrer" aria-label="Сайт отеля Azimut Тюмень">Azimut</a> в центре города стоимостью <span class="nowrap">4 500 ₽ за ночь</span>, либо вы можете выбрать жильё самостоятельно.</p>
           </article>
           <article class="detail-card" id="transfer">
             <h3>Мы позаботимся о дороге</h3>
