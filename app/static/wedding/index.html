@@ -205,10 +205,10 @@
       /* RSVP+контакты: 2 колонки, компактный центрированный контейнер */
       .rsvp-grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--space-5); justify-items:stretch; text-align:left; max-width:56rem; margin-inline:auto; align-items:start; }
       .detail-card, .rsvp-card, .contact-card { text-align:left; }
-      /* Десктоп: фото растягивается в высоту целиком, по бокам полоски фона */
-      .single-photo-row { width:100%; }
-      .single-photo-wrap { max-height: 100vh; width:auto; height:100vh; margin-inline:auto; }
-      .single-photo-card { width:auto; max-width:none; height:100%; max-height:100vh; object-fit:contain; }
+      /* Десктоп: фото ограничено по высоте, по бокам полоски фона, не выходит за блок */
+      .single-photo-row { width:100%; justify-items:center; }
+      .single-photo-wrap { height:auto; max-height: 70vh; width:auto; max-width:100%; margin-inline:auto; }
+      .single-photo-card { width:auto; max-width:100%; height:auto; max-height: 70vh; object-fit:contain; }
     }
     @media (max-width: 719px) {
       .site-header { padding: 0; }
