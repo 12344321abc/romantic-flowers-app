@@ -75,6 +75,7 @@
     .eyebrow { display:inline-flex; align-items:center; gap:.5rem; padding:0; border:0; border-radius:0; color:var(--color-text-muted); font-size:var(--text-xs); letter-spacing:.14em; text-transform:uppercase; background:transparent; margin-bottom: var(--space-3); font-weight:500; }
     .eyebrow::before { content:none; }
     .section-title { margin:0 0 var(--space-4); font-family:var(--font-display); font-size:var(--text-xl); line-height:1.05; font-weight:600; }
+    .section-title--display { text-align:center; text-transform:uppercase; letter-spacing:.02em; margin-inline:auto; }
     .section-intro { margin:0 0 var(--space-5); color:var(--color-text-muted); max-width:42rem; }
     .site-header { position:sticky; top:0; z-index:30; backdrop-filter: blur(14px); background:rgba(23,20,17,.78); border-bottom:1px solid var(--color-divider); }
     .nav { min-height:4.4rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
@@ -169,6 +170,7 @@
     .faq-item p { margin:0; color:var(--color-text-muted); text-align:left; }
     .rsvp-card, .contact-card { padding: clamp(var(--space-5), 4vw, var(--space-8)); text-align:left; }
     .rsvp-card .section-title, .contact-card .section-title { text-align:left; }
+    .rsvp-card .section-title--display, .contact-card .section-title--display { text-align:center; }
     .rsvp-card .section-intro, .contact-card .section-intro { margin-left:0; text-align:left; }
     .contact-list { text-align:left; }
     .form-grid { display:grid; gap:var(--space-3); }
@@ -276,7 +278,7 @@
     .blessing-block p { color: var(--color-text-muted); max-width: 32rem; margin: 0 auto var(--space-3); }
     
 
-    .rsvp-choice-list { list-style:none; margin:0; padding:0; display:grid; gap:.6rem; }
+    .rsvp-choice-list { list-style:none; margin:0; padding:0; display:grid; gap:.3rem; }
     .rsvp-choice-list li { display:flex; align-items:center; gap:.65rem; }
     .rsvp-choice-list input[type="radio"], .rsvp-choice-list input[type="checkbox"] { width:1.15rem; height:1.15rem; accent-color: var(--color-primary); }
     .rsvp-choice-list label { font-size: var(--text-sm); color: var(--color-text-muted); }
@@ -407,6 +409,7 @@
     .dresscode-section .eyebrow { border:0; background: transparent; }
     .dresscode-section .section-intro { color: rgba(246,239,224,.86); margin: 0; max-width: 32rem; }
     .dresscode-section .swatches { margin-top: var(--space-2); }
+    .section-accent { background: linear-gradient(180deg, rgba(127,139,98,.06), rgba(127,139,98,.02)); }
 </style>
 </head>
 <body>
@@ -487,10 +490,10 @@
             <ul class="timing-rows">
               <li><time datetime="2026-09-13T15:30">15:30</time><span>Трансфер для гостей</span></li>
               <li><time datetime="2026-09-13T16:30">16:30</time><span>Сбор гостей и приветственный аперитив</span></li>
-              <li><time datetime="2026-09-13T17:30">17:30</time><span>Церемония</span></li>
-              <li><time datetime="2026-09-13T18:30">18:30</time><span>Ужин, тёплые слова и первый тост</span></li>
-              <li><time datetime="2026-09-13T20:30">20:30</time><span>Музыка, танцы и много объятий</span></li>
-              <li><time datetime="2026-09-14T00:30">после 00:30</time><span>Продолжение вечера для тех, кто захочет остаться</span></li>
+              <li><time datetime="2026-09-13T17:00">17:00</time><span>Церемония</span></li>
+              <li><time datetime="2026-09-13T18:00">18:00</time><span>Ужин, тёплые слова и первый тост</span></li>
+              <li><time datetime="2026-09-13T20:00">20:00</time><span>Музыка, танцы и много объятий</span></li>
+              <li><time datetime="2026-09-14T00:00">после 00:00</time><span>Продолжение вечера для тех, кто захочет остаться</span></li>
             </ul>
           </div>
           <div class="scallop-bottom" aria-hidden="true"></div>
@@ -526,10 +529,9 @@
       </div>
     </section>
 
-    <section class="section" id="details">
+    <section class="section section-accent" id="details">
       <div class="container">
-        <span class="eyebrow">Детали для гостей</span>
-        <h2 class="section-title">Всё, что важно знать</h2>
+        <h2 class="section-title section-title--display">Всё, что важно знать</h2>
         <p class="section-intro">Собрали для вас практическую информацию, чтобы вы могли спокойно готовиться к празднику.</p>
         <div class="details-grid" style="margin-top: var(--space-6);">
           <article class="detail-card" id="gifts">
@@ -556,7 +558,7 @@
     <section class="section" id="rsvp">
       <div class="container rsvp-grid">
         <article class="rsvp-card" id="rsvp-card">
-          <h2 class="section-title">Анкета гостя</h2>
+          <h2 class="section-title section-title--display">Анкета гостя</h2>
           <p class="section-intro">Пожалуйста, заполните анкету до 20 августа 2026 года — это поможет нам с заботой подготовиться к вашему приезду и празднику.</p>
           <form class="form-grid" id="rsvp-form" novalidate>
             <div class="field"><label for="name">Имя и фамилия</label><input id="name" name="name" type="text" placeholder="Например, Анна Иванова" required></div>
