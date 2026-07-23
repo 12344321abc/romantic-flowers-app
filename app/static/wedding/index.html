@@ -13,6 +13,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Marck+Script&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/webp" href="/wedding/assets/couple-on-mountain-peak-svg.webp" />
+  <link rel="apple-touch-icon" href="/wedding/assets/couple-on-mountain-peak-svg.webp" />
   <style>
     :root {
       color-scheme: dark;
@@ -180,7 +182,10 @@
     .field textarea { min-height:7rem; resize:vertical; }
     .field input:focus, .field select:focus, .field textarea:focus { border-color:var(--color-primary); box-shadow:0 0 0 4px rgba(127,139,98,.12); }
     .inline-note { margin-top:.8rem; font-size:var(--text-xs); color:var(--color-text-faint); }
-    .contact-link { display:inline-flex; align-items:center; gap:.65rem; font-weight:600; color:var(--color-primary); }
+    .contact-link { display:inline-flex; align-items:center; gap:.65rem; font-weight:600; color:var(--color-primary); text-decoration:none; transition: transform var(--transition), color var(--transition); }
+    .contact-link:hover { transform:translateY(-1px); color:var(--color-primary-hover); text-decoration:underline; }
+    .contact-link svg { color:var(--color-primary); transition: color var(--transition); }
+    .contact-link:hover svg { color:var(--color-primary-hover); }
     .footer { padding:var(--space-8) 0 var(--space-10); border-top:1px solid var(--color-divider); color:var(--color-text-faint); }
     .footer-wrap { display:flex; flex-direction:column; gap:.75rem; }
 
@@ -622,8 +627,10 @@
           <p class="section-intro">Если появятся вопросы по дороге, размещению или программе дня — напишите нашему организатору Валентину. Он поможет сориентироваться.</p>
           <ul class="contact-list">
             <li><strong>Организатор</strong><span class="muted">Валентин</span></li>
-            <!-- Когда будет готова реальная ссылка на Telegram — замените содержимое .contact-link ниже на неё. -->
-            <li><strong>Telegram</strong><span class="muted">Ссылку на Telegram отправим ближе к дате праздника</span></li>
+            <li><strong>Telegram</strong><a class="contact-link" href="https://t.me/valentinkk" target="_blank" rel="noopener noreferrer" aria-label="Написать Валентину в Telegram">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M21.94 4.6l-3.3 15.56c-.25 1.1-.9 1.38-1.83.86l-5.06-3.73-2.44 2.35c-.27.27-.5.5-1 .5l.36-5.16 9.4-8.49c.4-.36-.09-.56-.63-.2L6.06 13.2l-5-1.56c-1.08-.34-1.1-1.08.23-1.6l19.57-7.54c.9-.33 1.69.2 1.4 1.6z"/></svg>
+              <span>@valentinkk</span>
+            </a></li>
           </ul>
         </aside>
       </div>
