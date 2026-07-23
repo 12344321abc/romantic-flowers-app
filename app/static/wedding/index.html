@@ -105,19 +105,25 @@
       grid-template-columns: 1fr;
       gap: var(--space-5);
       align-items:center;
+      justify-items:center;
       margin-top: var(--space-8);
     }
     .single-photo-card {
-      position:relative;
-      min-height:26rem;на
+      display:block;
+      width:100%;
+      height:auto;
       border-radius:1.6rem;
-      overflow:hidden;
-      background: linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.28)), url('/wedding/assets/hero_together.jpg') center 30%/cover;
       box-shadow: var(--shadow-lg);
     }
-    .single-photo-card::after {
+    .single-photo-wrap {
+      position:relative;
+      display:block;
+      width:100%;
+    }
+    .single-photo-wrap::after {
       content:"";
       position:absolute; inset:0;
+      border-radius:1.6rem;
       background: linear-gradient(180deg, transparent 55%, rgba(34,28,21,.55));
       pointer-events:none;
     }
@@ -199,6 +205,10 @@
       /* RSVP+контакты: 2 колонки, компактный центрированный контейнер */
       .rsvp-grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--space-5); justify-items:stretch; text-align:left; max-width:56rem; margin-inline:auto; align-items:start; }
       .detail-card, .rsvp-card, .contact-card { text-align:left; }
+      /* Десктоп: фото растягивается в высоту целиком, по бокам полоски фона */
+      .single-photo-row { width:100%; }
+      .single-photo-wrap { max-height: 100vh; width:auto; height:100vh; margin-inline:auto; }
+      .single-photo-card { width:auto; max-width:none; height:100%; max-height:100vh; object-fit:contain; }
     }
     @media (max-width: 719px) {
       .site-header { padding: 0; }
@@ -451,7 +461,9 @@
 
         <div class="hero-layout">
           <div class="single-photo-row">
-            <div class="single-photo-card" aria-label="Фотография Любови и Виталия"></div>
+            <div class="single-photo-wrap">
+              <img class="single-photo-card" src="/wedding/assets/hero_together.jpg" alt="Любовь и Виталий" />
+            </div>
           </div>
         </div>
 
@@ -549,7 +561,7 @@
           </article>
           <article class="detail-card" id="transfer">
             <h3>Мы позаботимся о дороге</h3>
-            <p>Мы организуем трансфер для гостей, которым он понадобится. Пожалуйста, отметьте это в анкете — так мы заранее рассчитаем количество мест и сообщим детали ближе к празднику.</p>
+            <p>Мы организуем трансфер от отеля Azimut для гостей, которым он понадобится. Пожалуйста, отметьте это в анкете — так мы заранее рассчитаем количество мест и сообщим детали ближе к празднику.</p>
           </article>
         </div>
       </div>
