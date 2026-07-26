@@ -728,10 +728,12 @@
 
         // Если отмечен «Свой вариант» напитка — дописать введённый текст в массив drinks,
         // чтобы он попал в колонку drinks таблицы (поле drinksOther скриптом не обрабатывается).
+        // Сам чекбокс «Свой вариант» убираем из drinks, чтобы не было дублирования.
         const otherCheckbox = document.getElementById('drink-other');
         const otherInput = document.querySelector('.drink-other-input');
         if (otherCheckbox && otherCheckbox.checked && otherInput && otherInput.value.trim()) {
-          data.append('drinks', 'Свой вариант: ' + otherInput.value.trim());
+          data.append('drinks', otherInput.value.trim());
+          data.delete('drinks', 'Свой вариант');
           data.delete('drinksOther');
         } else {
           data.delete('drinksOther');
