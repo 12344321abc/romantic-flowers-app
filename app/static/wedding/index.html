@@ -193,6 +193,10 @@
     .contact-link svg { color:var(--color-primary); transition: color var(--transition); }
     .contact-link:hover svg { color:var(--color-primary-hover); }
     .nowrap { white-space:nowrap; }
+    .drink-other-row { flex-wrap:wrap; align-items:center; }
+    .drink-other-input { display:none; width:100%; margin-top:.35rem; min-height:2.6rem; padding:.6rem .8rem; border-radius:.8rem; border:1px solid var(--color-border); background:rgba(255,255,255,.03); color:var(--color-text); font-size:var(--text-sm); outline:none; }
+    .drink-other-input:focus { border-color:var(--color-primary); box-shadow:0 0 0 3px rgba(127,139,98,.12); }
+    #drink-other:checked ~ .drink-other-input { display:block; }
     .footer { padding:var(--space-8) 0 var(--space-10); border-top:1px solid var(--color-divider); color:var(--color-text-faint); }
     .footer-wrap { display:flex; flex-direction:column; gap:.75rem; }
 
@@ -593,6 +597,11 @@
                 <li><input type="checkbox" id="drink-white" name="drinks" value="Белое вино"><label for="drink-white">Белое вино</label></li>
                 <li><input type="checkbox" id="drink-red" name="drinks" value="Красное вино"><label for="drink-red">Красное вино</label></li>
                 <li><input type="checkbox" id="drink-none" name="drinks" value="Безалкогольные напитки"><label for="drink-none">Безалкогольные напитки</label></li>
+                <li class="drink-other-row">
+                  <input type="checkbox" id="drink-other" name="drinks" value="Свой вариант">
+                  <label for="drink-other">Свой вариант</label>
+                  <input type="text" class="drink-other-input" name="drinksOther" placeholder="Напишите свой вариант" aria-label="Свой вариант напитка">
+                </li>
               </ul>
             </div>
 
@@ -716,6 +725,17 @@
         success.classList.remove('is-visible');
 
         const data = new FormData(form);
+
+        // Если отмечен «Свой вариант» напитка — дописать введённый текст в массив drinks,
+        // чтобы он попал в колонку drinks таблицы (поле drinksOther скриптом не обрабатывается).
+        const otherCheckbox = document.getElementById('drink-other');
+        const otherInput = document.querySelector('.drink-other-input');
+        if (otherCheckbox && otherCheckbox.checked && otherInput && otherInput.value.trim()) {
+          data.append('drinks', 'Свой вариант: ' + otherInput.value.trim());
+          data.delete('drinksOther');
+        } else {
+          data.delete('drinksOther');
+        }
 
         fetch(RSVP_ENDPOINT, { method: 'POST', body: data, mode: 'no-cors' })
           .then(function() {
